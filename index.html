@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Finanzielle Hilfe und Beratung in der Energiekrise</title>
+<style>
+/*
+p{
+color:darkblue;
+margin: 30px;
+}*/
+h1{color:black;margin: 50px;}
+/*div{color:blue; width: 500px; height: 200px;margin: 30px;}*/
+</style>
+</head>
+<body>
+<h1>Finanzielle Hilfe und Beratung in der Energiekrise</h1>
+<form action="#" method="post">
+<h2 style="color: black;">Wo kann ich Beratung oder finanzielle Unterstützung erhalten,<br> wenn ich meine erhöhten Heizkosten nicht mehr bezahlen kann?</h2>
+<h3>BEZIEHE ICH BEREITS TRANSFERLEISTUNGEN?</h3>
+<!--if-else, um Transferleistungen auch schon aufzuteilen-->
+<input type="radio" id="leistung1" name="leistung" value="2">
+<label for="leistung1">Ich beziehe <strong>keine</strong> dieser Transferleistungen: <br>
+<br> <div style="text-indent:20px;">a &#041; Grundsicherung für Arbeitssuchende SGBII</div>
+<br> <div style="text-indent:20px;">b &#041; Grundsicherung im Alter und bei Erwerbsminderung SGBXII </div>
+<br> <div style="text-indent:20px;">c &#041; Hilfe zum Lebensunterhalt SGBXII</div></label><br>
+<input type="radio" id="leistung2" name="leistung" value="3">
+<label for="leistung2">Ich beziehe Grundsicherung, Hilfe zum Lebensunterhalt nach dem SGB XII
+oder Leistungen nach dem Asylbewerberleistungsgesetz vom Sozialamt Nürnberg</label><br><br>
+<input type="radio" id="leistung3" name="leistung" value="4">
+<label for="leistung3">Ich beziehe Grundsicherung nach dem SGB II vom Jobcenter Nürnberg</label><br>
+<h3>UM WELCHE RECHNUNG HANDELT ES SICH?</h3>
+<input type="radio" id = "rechnung1" name="rechnung" value ="1">
+<label for="rechnung1">Erhöhter Heizkostenabschlag oder Heizkostenjahresabrechnung </label><br>
+<input type="radio" id = "rechnung2" name="rechnung" value ="2">
+<label for="rechnung2">Energieschulden oder drohende Energiesperre </label>
+<!--if-else, um Sachverhalte bzgl. der Rechnungen zu trennen-->
+<!--Altergrenze zu Heizkostenabschlag-->
+<!--Angehörige zu Energieschulden-->
+<h3>WELCHER SACHVERHALT LIEGT BEI MIR VOR?</h3>
+<input type="radio" id="trueAltersgrenze" name="altersGrenze" value="1">
+<label for="trueAltersgrenze">Ich habe die Altersgrenze <strong>nicht</strong> erreicht</label>
+<input type="radio" id="falseAltersgrenze" name="altersGrenze" value="2">
+<label for="falseAltersgrenze">Ich habe die Altergrenze erreicht</label><br>
+<input type="radio" id="u21Ang" name="angehoerige" value="3">
+<label for="u21Ang">In meinem Haushalt leben Angehörige unter 21 Jahre oder Schwangere</label>
+<input type="radio" id= "ab21Ang"name="angehoerige" value="4">
+<label for="ab21Ang">In meinem Haushalt leben nur Angehörige über 21 Jahre</label><br><br>
+<!--wenn 1 zustrifft, dann kommen diese nächsten optionen-->
+<input type="radio" name="Altergrenze" id="noAltersrente1" value="5">
+<label for="noAltersrente1">Ich beziehe keine Altersrente und bin auch nicht dauerhaft voll erwerbsgemindert.</label><br>
+<input type="radio" name="Altergrenze" id="yesAltersrente2" value="6">
+<label for="yesAltersrente2">Ich bin Altersrentner/in oder dauerhaft voll erwerbsgemindert</label>
+<!--Nun kommen die Links zu den jeweiligen Hilfen-->
+<!--Wenn value=5 zutrifft, dann Jobcenter Nbg-->
+<!--Wenn value=2 und 6 zutrifft, dann Amt für Existenzsicherung und soziale Integration - Sozialamt-->
+<!--Wenn value=4 zutrifft, dann Sozialpädagogischer Fachdienst-->
+<!--Wenn value=3 zutrifft, dann Allgemeiner Sozialdienst-->
+<!--Wenn leistung2 zutrifft, dann Amt für Existenzsicherung und soziale Integration - Sozialamt-->
+<!--Wenn leistung3 zutrifft, dann Jobcenter Nbg-->
+<form action="#" method="post" onsubmit="return validateForm()">
+<h3><label for="schrifteingabe">Haben Sie noch weitere Fragen bezüglich der finanziellen Hilfe und Beratung in der Energiekrise? <br>
+Hinterlegen Sie bitte auch Ihre E-Mail Adresse, damit wir mit Ihnen in Kontakt treten können.</label></h3><br>
+<textarea id="schrifteingabe" name="schrifteingabe" rows="4" cols="50"></textarea><br>
+<span id="error-message" class="error-message"></span><br>
+<input type="submit" value="Antwort senden">
+</form>
+<script>
+function validateForm() {
+var schrifteingabe = document.getElementById('schrifteingabe').value;
+var errorMessage = document.getElementById('error-message');
+if (schrifteingabe.trim() === '') {
+errorMessage.textContent = 'Bitte geben Sie eine Antwort ein.';
+return false;
+} else {
+errorMessage.textContent = '';
+return true;
+}
+}
+</script>
+</form>
+</body>
+</html>
+
