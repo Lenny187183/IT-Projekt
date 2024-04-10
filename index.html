@@ -59,6 +59,8 @@ oder Leistungen nach dem Asylbewerberleistungsgesetz vom Sozialamt Nürnberg</la
 <!--Wenn value=3 zutrifft, dann Allgemeiner Sozialdienst-->
 <!--Wenn leistung2 zutrifft, dann Amt für Existenzsicherung und soziale Integration - Sozialamt-->
 <!--Wenn leistung3 zutrifft, dann Jobcenter Nbg-->
+<br><br><button id="Bestätigung">Bestätigung</button>
+
 <form action="#" method="post" onsubmit="return validateForm()">
 <h3><label for="schrifteingabe">Haben Sie noch weitere Fragen bezüglich der finanziellen Hilfe und Beratung in der Energiekrise? <br>
 Hinterlegen Sie bitte auch Ihre E-Mail Adresse, damit wir mit Ihnen in Kontakt treten können.</label></h3><br>
@@ -78,6 +80,28 @@ errorMessage.textContent = '';
 return true;
 }
 }
+
+const buttonA = document.getElementById('leistung1');
+const buttonB = document.getElementById('leistung2');
+const buttonC = document.getElementById('leistung3');
+const buttonD = document.getElementById('rechnung1');
+const buttonF = document.getElementById('rechnung2');
+const buttonG = document.getElementById('trueAltersgrenze');
+const buttonH = document.getElementById('falseAltersgrenze');
+const buttonI = document.getElementById('u21Ang');
+const buttonJ = document.getElementById('ab21Ang');
+const buttonK = document.getElementById('noAltersrente1');
+const buttonL = document.getElementById('yesAltersrente2');
+
+function Buttonevent(radio){
+	if(buttonA.checked && buttonL.checked){
+		alert("Amt für Existenzsicherung und soziale Integration");
+	}
+
+
+}
+
+
 </script>
 </form>
 </body>
