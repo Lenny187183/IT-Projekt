@@ -10,7 +10,7 @@ p{
 color:darkblue;
 margin: 30px;
 }*/
-h1{color:black;margin: 50px;}
+h1{color:black;margin: 70px;}
 /*div{color:blue; width: 500px; height: 200px;margin: 30px;}*/
 </style>
 </head>
@@ -65,21 +65,6 @@ Hinterlegen Sie bitte auch Ihre E-Mail Adresse, damit wir mit Ihnen in Kontakt t
 <textarea id="schrifteingabe" name="schrifteingabe" rows="4" cols="50"></textarea><br>
 <span id="error-message" class="error-message"></span><br>
 <input type="submit" value="Antwort senden">
-</form>
-<script>
-function validateForm() {
-var schrifteingabe = document.getElementById('schrifteingabe').value;
-var errorMessage = document.getElementById('error-message');
-if (schrifteingabe.trim() === '') {
-errorMessage.textContent = 'Bitte geben Sie eine Antwort ein.';
-return false;
-} else {
-errorMessage.textContent = '';
-return true;
-}
-}
-</script>
-</form>
 </body>
 </html>
 
