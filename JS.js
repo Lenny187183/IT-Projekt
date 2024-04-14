@@ -46,7 +46,7 @@ function validateForm() {
 		}else if(buttonA && buttonD && buttonG && buttonL){
 			window.location.href = "https://www.nuernberg.de/internet/sozialamt/"
 		}else{
-			alert("Bitte wählen Sie nur eine Option pro Kategorie!");
+			alert("Sie müssen Pro Kategorie mindestens eine Option wählen!");
 		}
 
 
