@@ -1,4 +1,4 @@
-function Main() {
+function EingabeValidierung() {
 	var schrifteingabe = document.getElementById('schrifteingabe').value;
 	var errorMessage = document.getElementById('error-message');
 	if (schrifteingabe.trim() === '') {
