@@ -1,4 +1,4 @@
-function validateForm() {
+function Main() {
 	var schrifteingabe = document.getElementById('schrifteingabe').value;
 	var errorMessage = document.getElementById('error-message');
 	if (schrifteingabe.trim() === '') {
@@ -46,7 +46,7 @@ function validateForm() {
 		}else if(buttonA && buttonD && buttonG && buttonL){
 			window.location.href = "https://www.nuernberg.de/internet/sozialamt/"
 		}else{
-			alert("Sie müssen Pro Kategorie mindestens eine Option wählen");
+			alert("Bitte sehen Sie sich ihre Eingabe nochmal an");
 		}
 
 
@@ -54,3 +54,5 @@ function validateForm() {
 	
 	
 	}
+
+	
