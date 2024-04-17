@@ -20,37 +20,37 @@ h1{color:black;margin: 50px;}
 <h2 style="color: black;">Wo kann ich Beratung oder finanzielle Unterstützung erhalten,<br> wenn ich meine erhöhten Heizkosten nicht mehr bezahlen kann?</h2>
 <h3>BEZIEHE ICH BEREITS TRANSFERLEISTUNGEN?</h3>
 <!--if-else, um Transferleistungen auch schon aufzuteilen-->
-<input type="checkbox" id="leistung1" name="leistung" value="2">
+<input type="radio" id="leistung1" name="leistung" value="2">
 <label for="leistung1">Ich beziehe <strong>keine</strong> dieser Transferleistungen: <br>
 <br> <div style="text-indent:20px;">a &#041; Grundsicherung für Arbeitssuchende SGBII</div>
 <br> <div style="text-indent:20px;">b &#041; Grundsicherung im Alter und bei Erwerbsminderung SGBXII </div>
 <br> <div style="text-indent:20px;">c &#041; Hilfe zum Lebensunterhalt SGBXII</div></label><br>
-<input type="checkbox" id="leistung2" name="leistung" value="3">
+<input type="radio" id="leistung2" name="leistung" value="3">
 <label for="leistung2">Ich beziehe Grundsicherung, Hilfe zum Lebensunterhalt nach dem SGB XII
 oder Leistungen nach dem Asylbewerberleistungsgesetz vom Sozialamt Nürnberg</label><br><br>
-<input type="checkbox" id="leistung3" name="leistung" value="4">
+<input type="radio" id="leistung3" name="leistung" value="4">
 <label for="leistung3">Ich beziehe Grundsicherung nach dem SGB II vom Jobcenter Nürnberg</label><br>
 <h3>UM WELCHE RECHNUNG HANDELT ES SICH?</h3>
-<input type="checkbox" id = "rechnung1" name="rechnung" value ="1">
+<input type="radio" id = "rechnung1" name="rechnung" value ="1">
 <label for="rechnung1">Erhöhter Heizkostenabschlag oder Heizkostenjahresabrechnung </label><br>
-<input type="checkbox" id = "rechnung2" name="rechnung" value ="2">
+<input type="radio" id = "rechnung2" name="rechnung" value ="2">
 <label for="rechnung2">Energieschulden oder drohende Energiesperre </label>
 <!--if-else, um Sachverhalte bzgl. der Rechnungen zu trennen-->
 <!--Altergrenze zu Heizkostenabschlag-->
 <!--Angehörige zu Energieschulden-->
 <h3>WELCHER SACHVERHALT LIEGT BEI MIR VOR?</h3>
-<input type="checkbox" id="trueAltersgrenze" name="altersGrenze" value="1">
+<input type="radio" id="trueAltersgrenze" name="altersGrenze" value="1">
 <label for="trueAltersgrenze">Ich habe die Altersgrenze <strong>nicht</strong> erreicht</label>
-<input type="checkbox" id="falseAltersgrenze" name="altersGrenze" value="2">
+<input type="radio" id="falseAltersgrenze" name="altersGrenze" value="2">
 <label for="falseAltersgrenze">Ich habe die Altergrenze erreicht</label><br>
-<input type="checkbox" id="u21Ang" name="angehoerige" value="3">
+<input type="radio" id="u21Ang" name="angehoerige" value="3">
 <label for="u21Ang">In meinem Haushalt leben Angehörige unter 21 Jahre oder Schwangere</label>
-<input type="checkbox" id= "ab21Ang"name="angehoerige" value="4">
+<input type="radio" id= "ab21Ang"name="angehoerige" value="4">
 <label for="ab21Ang">In meinem Haushalt leben nur Angehörige über 21 Jahre</label><br><br>
 <!--wenn 1 zustrifft, dann kommen diese nächsten optionen-->
-<input type="checkbox" name="Altergrenze" id="noAltersrente1" value="5">
+<input type="radio" name="Altergrenze" id="noAltersrente1" value="5">
 <label for="noAltersrente1">Ich beziehe keine Altersrente und bin auch nicht dauerhaft voll erwerbsgemindert.</label><br>
-<input type="checkbox" name="Altergrenze" id="yesAltersrente2" value="6">
+<input type="radio" name="Altergrenze" id="yesAltersrente2" value="6">
 <label for="yesAltersrente2">Ich bin Altersrentner/in oder dauerhaft voll erwerbsgemindert</label>
 
 <br><br><button type="button" onclick="weiterleiten()">Bestätigung</button>
