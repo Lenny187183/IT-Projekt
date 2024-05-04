@@ -29,7 +29,26 @@ function EingabeValidierung() {
 
 		
 		if(buttonC){
-			window.location.href = "https://www.arbeitsagentur.de/vor-ort/jobcenter/jobcenter-nuernberg-stadt-nuernberg.html";
+
+			const dialog = document.getElementById('confirmationDialog');
+			
+			 dialog.showModal();
+
+			 const confirmBtn = document.getElementById('confirmBtn');
+			 confirmBtn.addEventListener('click', () => {window.location.href = "https://www.arbeitsagentur.de/vor-ort/jobcenter/jobcenter-nuernberg-stadt-nuernberg.html";
+			
+			dialog.close();
+			});
+			const cancelBtn = document.getElementById('cancelBtn');
+            cancelBtn.addEventListener('click', () => {
+            alert("Aktion abgebrochen.");
+
+         dialog.close();
+		  
+
+
+			
+	     });
 		}
 		else if(buttonA && buttonF && buttonI){
 			window.location.href = "https://www.nuernberg.de/internet/jugendamt/allgemeinersozialdienst.html"

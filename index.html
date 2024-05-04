@@ -54,7 +54,19 @@ oder Leistungen nach dem Asylbewerberleistungsgesetz vom Sozialamt Nürnberg</la
 <label for="yesAltersrente2">Ich bin Altersrentner/in oder dauerhaft voll erwerbsgemindert</label>
 
 <br><br><button type="button" onclick="weiterleiten()">Bestätigung</button>
-
+<dialog id="confirmationDialog">
+	<p>Benötigte Unterlagen:</p>
+	<ul>
+	  <li>Jobcenter Bescheid</li>
+	  <li>Abrechnung der N-ERGIE</li>
+	  <li>Unterlagen der N-ERGIE (Sperrankündigung, Mahnschreiben usw.)</li>
+	  
+	</ul>
+	<div class="buttons">
+	  <button id="confirmBtn">Bestätigen</button>
+	  <button id="cancelBtn">Abbrechen</button>
+	</div>
+  </dialog>
 
 <form action="#" method="post" onsubmit="return validateForm()">
 <h3><label for="schrifteingabe">Haben Sie noch weitere Fragen bezüglich der finanziellen Hilfe und Beratung in der Energiekrise? <br>
