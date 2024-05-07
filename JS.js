@@ -70,6 +70,22 @@ function EingabeValidierung() {
 
 
 			
+		function confirmAction(targetUrl) {
+			const dialog = document.getElementById('confirmationDialog');
+			dialog.showModal();
+		  
+			const confirmBtn = document.getElementById('confirmBtn');
+			confirmBtn.addEventListener('click', () => {
+			  window.location.href = targetUrl;
+			  dialog.close();
+			});
+		  
+			const cancelBtn = document.getElementById('cancelBtn');
+			cancelBtn.addEventListener('click', () => {
+			  alert("Aktion abgebrochen.");
+			  dialog.close();
+			});
+		  }
 	
 	
 	}
