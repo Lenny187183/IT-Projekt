@@ -1,19 +1,4 @@
-function EingabeValidierung() {
-	var schrifteingabe = document.getElementById('schrifteingabe').value;
-	var errorMessage = document.getElementById('error-message');
-	if (schrifteingabe.trim() === '') {
-	errorMessage.textContent = 'Bitte geben Sie eine Antwort ein.';
-	return false;
-	} else {
-	errorMessage.textContent = '';
-	return true;
-	}
-	}
-	
-	
-	
-	
-	function weiterleiten(){
+function weiterleiten(){
 
 		const buttonA = document.querySelector('input[id="leistung1"]').checked;
 	    const buttonB = document.querySelector('input[id="leistung2"]').checked;
@@ -27,28 +12,32 @@ function EingabeValidierung() {
 	    const buttonK = document.querySelector('input[id="noAltersrente1"]').checked;
 	    const buttonL = document.querySelector('input[id="yesAltersrente2"]').checked;
 
-		
-		if(buttonC){
-
+		function confirmAction(targetUrl) {
 			const dialog = document.getElementById('confirmationDialog');
+			dialog.showModal();
 			
-			 dialog.showModal();
-
-			 const confirmBtn = document.getElementById('confirmBtn');
-			 confirmBtn.addEventListener('click', () => {window.location.href = "https://www.arbeitsagentur.de/vor-ort/jobcenter/jobcenter-nuernberg-stadt-nuernberg.html";
-			
-			dialog.close();
-			});
-			const cancelBtn = document.getElementById('cancelBtn');
-            cancelBtn.addEventListener('click', () => {
-            alert("Aktion abgebrochen.");
-
-         dialog.close();
 		  
-
-
+			const confirmBtn = document.getElementById('confirmBtn');
+			console.log(confirmBtn);
+			confirmBtn.addEventListener('click', () => {
+			alert("Aktion angenommen");
+			  window.location.location(targetUrl);
+			  dialog.close();
+			});
+		  
+			const cancelBtn = document.getElementById('cancelBtn');
 			
-	     });
+			cancelBtn.addEventListener('click', () => {
+			  alert("Aktion abgebrochen.");
+			  dialog.close();
+			});
+		}
+		
+		
+		  if(buttonC){
+
+			confirmAction("https://www.arbeitsagentur.de/vor-ort/jobcenter/jobcenter-nuernberg-stadt-nuernberg.html");
+	    
 		}
 		else if(buttonA && buttonF && buttonI){
 			window.location.href = "https://www.nuernberg.de/internet/jugendamt/allgemeinersozialdienst.html"
@@ -70,24 +59,6 @@ function EingabeValidierung() {
 
 
 			
-		function confirmAction(targetUrl) {
-			const dialog = document.getElementById('confirmationDialog');
-			dialog.showModal();
-		  
-			const confirmBtn = document.getElementById('confirmBtn');
-			confirmBtn.addEventListener('click', () => {
-			  window.location.href = targetUrl;
-			  dialog.close();
-			});
-		  
-			const cancelBtn = document.getElementById('cancelBtn');
-			cancelBtn.addEventListener('click', () => {
-			  alert("Aktion abgebrochen.");
-			  dialog.close();
-			});
-		  }
-	
-	
-	}
+}
 
 	
