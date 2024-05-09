@@ -32,6 +32,15 @@ function weiterleiten(){
 			  alert("Aktion abgebrochen.");
 			  dialog.close();
 			});
+
+			const downloadBtn = document.getElementById('downloadBtn');
+            downloadBtn.addEventListener('click', () => {
+            const filePath = 'C:\Users\lenna\Desktop\ScrumCheatSheet.pdf'; // Replace with actual file path
+            window.open(filePath, '_blank');
+		    });
+
+			
+
 		  }
 		
 		
