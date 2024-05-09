@@ -12,13 +12,17 @@ function weiterleiten(){
 	    const buttonK = document.querySelector('input[id="noAltersrente1"]').checked;
 	    const buttonL = document.querySelector('input[id="yesAltersrente2"]').checked;
 
-		function confirmAction(targetUrl) {
-			const dialog = document.getElementById('confirmationDialog');
+		function confirmAction(targetUrl, targetDialog) {
+			
+			
+		    const dialog = document.getElementById(targetDialog);
+			
+			
 			dialog.showModal();
 		  
 			const confirmBtn = document.getElementById('confirmBtn');
 			confirmBtn.addEventListener('click', () => {
-			  alert("Aktion angenommen");
+			  
 			  window.location.href = targetUrl; 
 			  dialog.close();
 			});
@@ -33,23 +37,23 @@ function weiterleiten(){
 		
 		  if(buttonC){
 
-			confirmAction("https://www.arbeitsagentur.de/vor-ort/jobcenter/jobcenter-nuernberg-stadt-nuernberg.html");
+			confirmAction("https://www.arbeitsagentur.de/vor-ort/jobcenter/jobcenter-nuernberg-stadt-nuernberg.html", "JobcenterUndASD");
 	    
 		}
 		else if(buttonA && buttonF && buttonI){
-			confirmAction("https://www.nuernberg.de/internet/jugendamt/allgemeinersozialdienst.html");
+			confirmAction("https://www.nuernberg.de/internet/jugendamt/allgemeinersozialdienst.html", "JobcenterUndASD");
 		}
 		else if(buttonA && buttonF && buttonJ){
-			confirmAction("https://www.nuernberg.de/internet/sozialamt/sozialpaedagogischerfachdienst.html");
+			confirmAction("https://www.nuernberg.de/internet/sozialamt/sozialpaedagogischerfachdienst.html", "ExistenzUndSFD");
 		}
 		else if(buttonB){
-			confirmAction("https://www.nuernberg.de/internet/sozialamt/");
+			confirmAction("https://www.nuernberg.de/internet/sozialamt/", "JobcenterUndASD");
 		}else if(buttonA && buttonD && buttonG && buttonK){
-			confirmAction("https://www.arbeitsagentur.de/vor-ort/jobcenter/jobcenter-nuernberg-stadt-nuernberg.html");
+			confirmAction("https://www.arbeitsagentur.de/vor-ort/jobcenter/jobcenter-nuernberg-stadt-nuernberg.html", "JobcenterUndASD");
 		}else if(buttonA && buttonD && buttonH){
-			confirmAction("https://www.nuernberg.de/internet/sozialamt/");
+			confirmAction("https://www.nuernberg.de/internet/sozialamt/", "JobcenterUndASD");
 		}else if(buttonA && buttonD && buttonG && buttonL){
-			confirmAction("https://www.nuernberg.de/internet/sozialamt/");
+			confirmAction("https://www.nuernberg.de/internet/sozialamt/", "JobcenterUndASD");
 		}else{
 			alert("Bitte sehen Sie sich ihre Eingabe nochmal an");
 		}
