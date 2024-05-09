@@ -15,23 +15,20 @@ function weiterleiten(){
 		function confirmAction(targetUrl) {
 			const dialog = document.getElementById('confirmationDialog');
 			dialog.showModal();
-			
 		  
 			const confirmBtn = document.getElementById('confirmBtn');
-			console.log(confirmBtn);
 			confirmBtn.addEventListener('click', () => {
-			alert("Aktion angenommen");
-			  window.location.location(targetUrl);
+			  alert("Aktion angenommen");
+			  window.location.href = targetUrl; 
 			  dialog.close();
 			});
 		  
 			const cancelBtn = document.getElementById('cancelBtn');
-			
 			cancelBtn.addEventListener('click', () => {
 			  alert("Aktion abgebrochen.");
 			  dialog.close();
 			});
-		}
+		  }
 		
 		
 		  if(buttonC){
@@ -40,19 +37,19 @@ function weiterleiten(){
 	    
 		}
 		else if(buttonA && buttonF && buttonI){
-			window.location.href = "https://www.nuernberg.de/internet/jugendamt/allgemeinersozialdienst.html"
+			confirmAction("https://www.nuernberg.de/internet/jugendamt/allgemeinersozialdienst.html");
 		}
 		else if(buttonA && buttonF && buttonJ){
-			window.location.href = "https://www.nuernberg.de/internet/sozialamt/sozialpaedagogischerfachdienst.html"
+			confirmAction("https://www.nuernberg.de/internet/sozialamt/sozialpaedagogischerfachdienst.html");
 		}
 		else if(buttonB){
-			window.location.href = "https://www.nuernberg.de/internet/sozialamt/"
+			confirmAction("https://www.nuernberg.de/internet/sozialamt/");
 		}else if(buttonA && buttonD && buttonG && buttonK){
-			window.location.href = "https://www.arbeitsagentur.de/vor-ort/jobcenter/jobcenter-nuernberg-stadt-nuernberg.html"
+			confirmAction("https://www.arbeitsagentur.de/vor-ort/jobcenter/jobcenter-nuernberg-stadt-nuernberg.html");
 		}else if(buttonA && buttonD && buttonH){
-			window.location.href = "https://www.nuernberg.de/internet/sozialamt/"
+			confirmAction("https://www.nuernberg.de/internet/sozialamt/");
 		}else if(buttonA && buttonD && buttonG && buttonL){
-			window.location.href = "https://www.nuernberg.de/internet/sozialamt/"
+			confirmAction("https://www.nuernberg.de/internet/sozialamt/");
 		}else{
 			alert("Bitte sehen Sie sich ihre Eingabe nochmal an");
 		}
