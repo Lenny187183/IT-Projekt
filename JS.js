@@ -33,7 +33,7 @@ function weiterleiten(){
 			  dialog.close();
 			});
 
-			const downloadBtn = document.getElementById('downloadBtn');
+			const downloadBtn = document.getElementById('Download');
             downloadBtn.addEventListener('click', () => {
             const filePath = 'C:\Users\lenna\Desktop\ScrumCheatSheet.pdf'; // Replace with actual file path
             window.open(filePath, '_blank');
@@ -41,7 +41,7 @@ function weiterleiten(){
 
 			
 
-		  }
+		}
 		
 		
 		  if(buttonC){
