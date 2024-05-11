@@ -29,7 +29,6 @@ function weiterleiten(){
 		  
 			const cancelBtn = document.getElementById('cancelBtn');
 			cancelBtn.addEventListener('click', () => {
-			  alert("Aktion abgebrochen.");
 			  dialog.close();
 			});
 
