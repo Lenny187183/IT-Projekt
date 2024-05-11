@@ -11,7 +11,7 @@ function weiterleiten(){
 	    const buttonJ = document.querySelector('input[id="ab21Ang"]').checked;
 	    const buttonK = document.querySelector('input[id="noAltersrente1"]').checked;
 	    const buttonL = document.querySelector('input[id="yesAltersrente2"]').checked;
-
+		
 		function confirmAction(targetUrl, targetDialog) {
 			
 			
@@ -33,15 +33,12 @@ function weiterleiten(){
 			  dialog.close();
 			});
 
-			const downloadBtn = document.getElementById('Download');
-            downloadBtn.addEventListener('click', () => {
-            const filePath = 'C:\Users\lenna\Desktop\ScrumCheatSheet.pdf'; // Replace with actual file path
-            window.open(filePath, '_blank');
-		    });
-
+			
+			
 			
 
 		}
+
 		
 		
 		  if(buttonC){
@@ -71,4 +68,11 @@ function weiterleiten(){
 			
 }
 
+function downloadPDF(){
+	var link = document.createElement('a');
+	link.href = "ScrumCheatSheet.pdf";
+	link.download = "ScrumCheatSheet.pdf";
+	link.click();
+
+}
 	
