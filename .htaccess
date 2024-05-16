@@ -1,0 +1,4 @@
+AuthType Basic
+AuthName "Protected Site"
+AuthUser File /Users/Lennard/IT_Projekt1/.htpasswd
+require valid-user
