@@ -5,6 +5,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Beratung und Unterstützung bei Energieschulden</title>
+<br>
+<a href="AdminSicht.html">Zur Admin Sicht</a>
 <style>
 /*
 p{
@@ -17,7 +19,7 @@ h1{color:black;margin: 50px;}
 </head>
 <body>
 <h1>Finanzielle Hilfen und Beratung in der Energiekrise</h1>
-<form action="#" method="post">
+<form action="connect.php" method="post">
 <h2 style="color: black;">Wo kann ich Beratung oder finanzielle Unterstützung erhalten,<br> wenn ich meine erhöhten Heizkosten nicht mehr bezahlen kann?</h2>
 <h3>BEZIEHE ICH BEREITS TRANSFERLEISTUNGEN?</h3>
 <!--if-else, um Transferleistungen auch schon aufzuteilen-->
@@ -53,6 +55,7 @@ oder Leistungen nach dem Asylbewerberleistungsgesetz vom Sozialamt Nürnberg</la
 <label for="noAltersrente1">Ich beziehe keine Altersrente und bin auch nicht dauerhaft voll erwerbsgemindert.</label><br>
 <input type="radio" name="Altergrenze" id="yesAltersrente2" value="6">
 <label for="yesAltersrente2">Ich bin Altersrentner/in oder dauerhaft voll erwerbsgemindert</label>
+</form>
 
 <br><br><button type="button" onclick="weiterleiten()">Bestätigung</button>
 <dialog id="JobcenterUndASD">
@@ -101,7 +104,7 @@ Hinterlegen Sie bitte auch Ihre E-Mail Adresse, damit wir mit Ihnen in Kontakt t
 <a href="https://www.iska.de/schuldnerberatung/" target="_blank" class="iska-button">
 <span> Zur ISKA Schulden- und Insolvenzberatung</span>
 </a>
-</form>
+
 </body>
 </html>
 
