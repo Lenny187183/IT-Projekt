@@ -4,7 +4,7 @@ $antworttyp = $_POST['antworttyp'];
 
 echo"geht net";
 
-$conn = new mysqli('127.0.0.1','root', '123', 'itprojekt');
+$conn = new mysqli('127.0.0.1','013083erika', '123', 'itprojekt');
 if($conn->connect_error){
 	die('connection Failed : '.$conn->connect_error);
 }else{
