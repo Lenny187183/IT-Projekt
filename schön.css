@@ -1,0 +1,114 @@
+/* style.css */
+
+/* Allgemeines Styling */
+body {
+	font-family: 'Open Sans', Arial, sans-serif; /* Schriftart */
+	line-height: 1.6;
+	background-color: #f4f4f4; /* Hintergrundfarbe */
+	color: #333; /* Textfarbe */
+	margin: 0; /* Entfernt standardmäßige Ränder */
+  }
+  
+  .container {
+	max-width: 960px; /* Maximale Breite des Inhaltsbereichs */
+	margin: 0 auto; /* Zentriert den Inhaltsbereich */
+	padding: 20px;
+  }
+  
+  /* Überschriften */
+  h1, h2, h3 {
+	color: #e00f0f; /* Primärfarbe für Überschriften */
+	margin-top: 20px;
+  }
+  
+  h1 {
+	font-size: 2.5em; /* Größere Schrift für die Hauptüberschrift */
+	text-align: center;
+  }
+  
+  /* Formulare */
+  form {
+	background-color: #fff; /* Weißer Hintergrund für das Formular */
+	padding: 20px;
+	border-radius: 5px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Leichter Schatten */
+  }
+  
+  label {
+	display: block;
+	margin-bottom: 5px;
+  }
+  
+  input[type="radio"],
+  input[type="checkbox"] {
+	margin-right: 10px;
+  }
+  
+  textarea {
+	width: 100%;
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	box-sizing: border-box;
+	resize: vertical;
+  }
+  
+  /* Buttons */
+  button,
+  input[type="submit"] {
+	background-color: #e00f0f; /* Primärfarbe für Buttons */
+	color: white;
+	padding: 10px 15px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+  }
+  
+  /* Links */
+  a {
+	color: #e00f0f; /* Primärfarbe für Links */
+	text-decoration: none;
+  }
+  
+  a:hover {
+	text-decoration: underline;
+  }
+  
+  /* ISKA Button (Anpassung an das Design der Nürnberger Webseite) */
+  .iska-button {
+	display: block;
+	text-align: center;
+	margin-top: 30px;
+	background-color: #4CAF50; /* Grün für den ISKA-Button */
+	color: white;
+	padding: 15px 20px;
+	border: none;
+	border-radius: 5px;
+  }
+  
+  /* Dialogfenster */
+  dialog {
+	/* ... (Styles für Dialogfenster wie zuvor) */
+  }
+  
+  /* Fehlermeldung */
+  .error-message {
+	color: red;
+  }
+
+  .radio-group {  /* Neue Klasse für die Gruppierung */
+	display: flex;
+	align-items: center; /* Zentriert vertikal */
+  }
+  
+  .radio-group input[type="radio"] {
+	margin-right: 5px; /* Abstand zwischen Radio-Button und Label */
+  }
+  
+  
+  
+  /* Einrückung für Unterpunkte (a, b, c) */
+  .radio-group div {
+	text-indent: 20px;
+  }
+  
