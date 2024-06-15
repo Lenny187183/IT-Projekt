@@ -86,10 +86,7 @@ body {
 	border-radius: 5px;
   }
   
-  /* Dialogfenster */
-  dialog {
-	/* ... (Styles für Dialogfenster wie zuvor) */
-  }
+  
   
   /* Fehlermeldung */
   .error-message {
