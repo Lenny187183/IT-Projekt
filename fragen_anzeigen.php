@@ -3,25 +3,48 @@
 $conn = new mysqli('localhost', 'testserver', '123', 'fragen');
 
 // Verbindung prüfen
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+if (!$conn) {
+    echo 'Connection error: '. mysqli_connect_error();
 }
 
 // SQL-Abfrage zum Auslesen aller Fragen
-$sql = "SELECT * FROM fragen";
-$result = $conn->query($sql);
+$sql = 'SELECT frage, antworttyp, id FROM fragen';
 
-// Ergebnisse ausgeben
-if ($result->num_rows > 0) {
-    while($row = $result->fetch_assoc()) {
-        echo "Frage: " . $row["frage"] . "<br>";
-        echo "Antworttyp: " . $row["antworttyp"] . "<br><br>"; 
-        // Hier kannst du weitere Spalten ausgeben, falls vorhanden
-    }
-} else {
-    echo "Keine Fragen gefunden.";
-}
+$result = mysqli_query($conn, $sql);
 
-// Verbindung schließen
-$conn->close();
+
+$fragen = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+mysqli_free_result($result);
+
+mysqli_close($conn);
+
+
+
 ?>
+
+<!DOCTYPE html>
+<html>
+<h4 class="center grey-text">fragen!</h4>
+
+<div class="container">
+		<div class="row">
+
+			<?php foreach($fragen as $fragen){ ?>
+
+				<div class="col s6 md3">
+					<div class="card z-depth-0">
+						<div class="card-content center">
+							<h6><?php echo htmlspecialchars($fragen['frage']); ?></h6>
+							<div><?php echo htmlspecialchars($fragen['antworttyp']); ?></div>
+						</div>
+						
+					</div>
+				</div>
+
+			<?php } ?>
+
+		</div>
+	</div>
+
+</html>
