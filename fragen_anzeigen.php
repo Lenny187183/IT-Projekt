@@ -8,7 +8,7 @@ if (!$conn) {
 }
 
 // SQL-Abfrage zum Auslesen aller Fragen
-$sql = 'SELECT frage, antworttyp, id FROM fragen';
+$sql = 'SELECT frage, antworttyp, antwortmöglichkeit, überschrift, id FROM fragen';
 
 $result = mysqli_query($conn, $sql);
 
@@ -23,28 +23,49 @@ mysqli_close($conn);
 
 ?>
 
+
+
 <!DOCTYPE html>
 <html>
-<h4 class="center grey-text">fragen!</h4>
+<h4 style= "text-align: center;" class="center grey-text"><?php echo htmlspecialchars($fragen[0]['überschrift']); ?></h4>
 
 <div class="container">
-		<div class="row">
+    <?php 
+        $aktuelleFrage = null; // Variable für die aktuelle Frage
+        foreach($fragen as $frage): 
+            // Wenn sich die Frage ändert, neuen Abschnitt beginnen
+            if ($frage['frage'] !== $aktuelleFrage):
+                $aktuelleFrage = $frage['frage']; // Aktuelle Frage aktualisieren
+    ?>
+                <div class="row">
+                    <div class="col s12">
+                        <div class="card z-depth-0">
+                            <div class="card-content center">
+                                <h5><?php echo htmlspecialchars($frage['frage']); ?></h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    <?php
+            endif; 
+            
+            // Antwortmöglichkeiten immer anzeigen
+            $antwortmoeglichkeiten = explode(',', $frage['antwortmöglichkeit']);
+            foreach ($antwortmoeglichkeiten as $moeglichkeit):
+    ?>
+                <div class="row">
+                    <div class="col s12">
+                        <label>
+                            <input type="radio" name="ausgewaehlte_antwort_<?php echo $frage['id']; ?>" value="<?php echo htmlspecialchars($moeglichkeit); ?>">
+                            <span><?php echo htmlspecialchars($moeglichkeit); ?></span>
+                        </label>
+                    </div>
+                </div>
+    <?php 
+            endforeach; 
+        endforeach; 
+    ?>
+</div>
 
-			<?php foreach($fragen as $fragen){ ?>
-
-				<div class="col s6 md3">
-					<div class="card z-depth-0">
-						<div class="card-content center">
-							<h6><?php echo htmlspecialchars($fragen['frage']); ?></h6>
-							<div><?php echo htmlspecialchars($fragen['antworttyp']); ?></div>
-						</div>
-						
-					</div>
-				</div>
-
-			<?php } ?>
-
-		</div>
-	</div>
-
+<link rel="stylesheet" href="schön.css">
 </html>
