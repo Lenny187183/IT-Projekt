@@ -30,40 +30,40 @@ mysqli_close($conn);
 <h4 style= "text-align: center;" class="center grey-text"><?php echo htmlspecialchars($fragen[0]['überschrift']); ?></h4>
 
 <div class="container">
-    <?php 
-        $aktuelleFrage = null; // Variable für die aktuelle Frage
-        foreach($fragen as $frage): 
-            // Wenn sich die Frage ändert, neuen Abschnitt beginnen
-            if ($frage['frage'] !== $aktuelleFrage):
-                $aktuelleFrage = $frage['frage']; // Aktuelle Frage aktualisieren
+    <?php
+    $aktuelleFrage = null;
+    foreach ($fragen as $frage):
+        if ($frage['frage'] !== $aktuelleFrage):
+            $aktuelleFrage = $frage['frage'];
     ?>
-                <div class="row">
-                    <div class="col s12">
-                        <div class="card z-depth-0">
-                            <div class="card-content center">
-                                <h5><?php echo htmlspecialchars($frage['frage']); ?></h5>
-                            </div>
+            <div class="row">
+                <div class="col s12">
+                    <div class="card z-depth-0">
+                        <div class="card-content center">
+                            <h5><?php echo htmlspecialchars($frage['frage']); ?></h5>
                         </div>
                     </div>
                 </div>
+            </div>
     <?php
-            endif; 
-            
-            // Antwortmöglichkeiten immer anzeigen
-            $antwortmoeglichkeiten = explode(',', $frage['antwortmöglichkeit']);
-            foreach ($antwortmoeglichkeiten as $moeglichkeit):
+        endif;
+
+        $antwortmoeglichkeiten = explode(',', $frage['antwortmöglichkeit']);
+
+        foreach ($antwortmoeglichkeiten as $moeglichkeit):
+            // Input-Typ basierend auf antworttyp bestimmen
+            $inputType = ($frage['antworttyp'] === 'Checkbox') ? 'checkbox' : 'radio'; 
     ?>
-                <div class="row">
-                    <div class="col s12">
-                        <label>
-                            <input type="radio" name="ausgewaehlte_antwort_<?php echo $frage['id']; ?>" value="<?php echo htmlspecialchars($moeglichkeit); ?>">
-                            <span><?php echo htmlspecialchars($moeglichkeit); ?></span>
-                        </label>
-                    </div>
+            <div class="row">
+                <div class="col s12">
+                    <label>
+                        <input type="<?php echo $inputType; ?>" name="ausgewaehlte_antwort_<?php echo $frage['id']; ?>" value="<?php echo htmlspecialchars($moeglichkeit); ?>">
+                        <span><?php echo htmlspecialchars($moeglichkeit); ?></span>
+                    </label>
                 </div>
-    <?php 
-            endforeach; 
-        endforeach; 
+            </div>
+    <?php endforeach; 
+    endforeach; 
     ?>
 </div>
 
