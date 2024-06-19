@@ -3,8 +3,8 @@
 
 $frage = $_POST['frage'];
 $antworttyp = $_POST['antworttyp'];
-$ueberschrift = $_POST['Überschrift'];
-$antwortmoeglichkeit = $_POST['Antwortmöglichkeit'];
+$ueberschrift = $_POST['überschrift'];
+$antwortmoeglichkeit = $_POST['antwortmöglichkeit'];
 
 
 
