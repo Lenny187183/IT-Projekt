@@ -49,22 +49,21 @@ mysqli_close($conn);
         endif;
 
         $antwortmoeglichkeiten = explode(',', $frage['antwortmöglichkeit']);
-
-        foreach ($antwortmoeglichkeiten as $moeglichkeit):
-            // Input-Typ basierend auf antworttyp bestimmen
-            $inputType = ($frage['antworttyp'] === 'Checkbox') ? 'checkbox' : 'radio'; 
     ?>
-            <div class="row">
-                <div class="col s12">
-                    <label>
-                        <input type="<?php echo $inputType; ?>" name="ausgewaehlte_antwort_<?php echo $frage['id']; ?>" value="<?php echo htmlspecialchars($moeglichkeit); ?>">
-                        <span><?php echo htmlspecialchars($moeglichkeit); ?></span>
-                    </label>
+        <form> <?php foreach ($antwortmoeglichkeiten as $moeglichkeit):
+                // Input-Typ basierend auf antworttyp bestimmen
+                $inputType = ($frage['antworttyp'] === 'Checkbox') ? 'checkbox' : 'radio';
+            ?>
+                <div class="row">
+                    <div class="col s12">
+                        <label>
+                            <input type="<?php echo $inputType; ?>" name="ausgewaehlte_antwort_<?php echo $frage['id']; ?>" value="<?php echo htmlspecialchars($moeglichkeit); ?>">
+                            <span><?php echo htmlspecialchars($moeglichkeit); ?></span>
+                        </label>
+                    </div>
                 </div>
-            </div>
-    <?php endforeach; 
-    endforeach; 
-    ?>
+            <?php endforeach; ?>
+        </form> <?php endforeach; ?>
 </div>
 
 <link rel="stylesheet" href="schön.css">
