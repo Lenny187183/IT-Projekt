@@ -36,7 +36,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     if($result -> num_rows == 1){
 
         
-        header("Location: AdminSicht.html");
+        header("Location: FragebogenErstellen.php");
         exit();
 
 
