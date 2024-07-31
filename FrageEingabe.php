@@ -16,8 +16,7 @@ if($conn->connect_error){
 	values(?,?,?,?)");
     $stmt->bind_param("ssss", $frage, $antworttyp, $ueberschrift, $antwortmoeglichkeit);
 	$stmt->execute();
-	echo"Sucessfull";
-	echo"Die Frage wurde übermittelt";
+	header("Location: AdminSicht.php");
 	$stmt->close();
 	$conn->close();
 }

@@ -15,7 +15,7 @@ if ($conn->connect_error) {
         $stmt->execute();
 
         // Weiterleitung zur AdminSicht.html des neuen Fragebogens
-        header("Location: AdminSicht.html?fragebogen_id=" . $stmt->insert_id); 
+        header("Location: AdminSicht.php?fragebogen_id=" . $stmt->insert_id); 
         exit();
     }}
 
@@ -40,13 +40,15 @@ if ($conn->connect_error) {
     </form>
 
     <h2>Vorhandene Fragebögen</h2>
-    <form action="AdminSicht.html" method="get"> <select name="fragebogen_id">
+    <form action="AdminSicht.php" method="get"> <select name="fragebogen_id">
             <?php foreach ($fragebogen as $fb): ?>
                 <option value="<?= $fb['id'] ?>"><?= $fb['titel'] ?></option>
             <?php endforeach; ?>
         </select>
         <button type="submit">Bearbeiten</button>
     </form>
+
+    <a href="Startseite.html">Zurück zur Hauptseite</a>
 </body>
 <link rel="stylesheet" href="schön.css">
 
