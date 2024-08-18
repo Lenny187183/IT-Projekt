@@ -1,4 +1,4 @@
-<?<php>
+<?php
 
 
 class fragebogen {
@@ -58,10 +58,28 @@ class fragebogen {
 
         $stmt->execute();
     }
+
+
+    public function getFragebogenDropdownOptions($conn) {
+        $sql = "SELECT id, titel FROM fragebogen";
+        $result = $conn->query($sql);
+
+        if (!$result) {
+            die("Fehler bei der Abfrage: " . $conn->error); 
+        }
+
+        $fragebogen = $result->fetch_all(MYSQLI_ASSOC);
+
+        $options = '';
+        foreach ($fragebogen as $fb) {
+            $options .= "<option value='{$fb['id']}'>{$fb['titel']}</option>";
+        }
+        return $options;
+    }
 }
 
 
 
 
 
-</php>
+?>

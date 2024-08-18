@@ -13,6 +13,8 @@ $sql = 'SELECT frage, antworttyp, antwortmöglichkeit, überschrift, id FROM fra
 $result = mysqli_query($conn, $sql);
 
 
+
+
 $fragen = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 mysqli_free_result($result);
@@ -22,6 +24,8 @@ mysqli_close($conn);
 
 
 ?>
+
+
 
 
 
@@ -47,24 +51,25 @@ mysqli_close($conn);
             </div>
     <?php
         endif;
-
+    
         $antwortmoeglichkeiten = explode(',', $frage['antwortmöglichkeit']);
+        $inputType = ($frage['antworttyp'] === 'Checkbox') ? 'checkbox' : 'radio'; // Input-Typ bestimmen
     ?>
-        <form> <?php foreach ($antwortmoeglichkeiten as $moeglichkeit):
-                // Input-Typ basierend auf antworttyp bestimmen
-                $inputType = ($frage['antworttyp'] === 'Checkbox') ? 'checkbox' : 'radio';
-            ?>
-                <div class="row">
-                    <div class="col s12">
+    
+        <form>
+            <div class="row">
+                <div class="col s12">
+                    <?php foreach ($antwortmoeglichkeiten as $moeglichkeit): ?>
                         <label>
                             <input type="<?php echo $inputType; ?>" name="ausgewaehlte_antwort_<?php echo $frage['id']; ?>" value="<?php echo htmlspecialchars($moeglichkeit); ?>">
-                            <span><?php echo htmlspecialchars($moeglichkeit); ?></span>
-                        </label>
-                    </div>
+                            <span style="white-space: normal;"><?php echo htmlspecialchars($moeglichkeit); ?></span> 
+                        </label><br>
+                    <?php endforeach; ?>
                 </div>
+            </div>
             <?php endforeach; ?>
-        </form> <?php endforeach; ?>
-</div>
-
-<link rel="stylesheet" href="schön.css">
-</html>
+            <button type="submit" class="btn red">Absenden</button> </form>
+    </div>
+    
+    <link rel="stylesheet" href="AnzeigenCSS.css">
+    </html>

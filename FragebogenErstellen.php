@@ -1,4 +1,9 @@
+
 <?php
+require_once 'Klassen/fragebogen.php';
+
+session_start();
+
 // Datenbankverbindung
 $conn = new mysqli('localhost', 'testserver', '123', 'fragen'); // Passe die Verbindungsdaten an
 
@@ -14,11 +19,13 @@ if ($conn->connect_error) {
         $stmt->bind_param("s", $titel);
         $stmt->execute();
 
+        
+        $_SESSION['neuer_fragebogen_id'] = $stmt->insert_id;
+
         // Weiterleitung zur AdminSicht.html des neuen Fragebogens
         header("Location: AdminSicht.php?fragebogen_id=" . $stmt->insert_id); 
         exit();
     }}
-
     // Fragebögen laden
     $sql = "SELECT id, titel FROM fragebogen";
     $result = $conn->query($sql);
@@ -27,6 +34,7 @@ if ($conn->connect_error) {
 
 <!DOCTYPE html>
 <html>
+<link rel="stylesheet" href="schön.css">
 <head>
     <title>Fragebogen erstellen/auswählen</title>
 </head>
@@ -40,16 +48,21 @@ if ($conn->connect_error) {
     </form>
 
     <h2>Vorhandene Fragebögen</h2>
-    <form action="AdminSicht.php" method="get"> <select name="fragebogen_id">
-            <?php foreach ($fragebogen as $fb): ?>
-                <option value="<?= $fb['id'] ?>"><?= $fb['titel'] ?></option>
-            <?php endforeach; ?>
-        </select>
-        <button type="submit">Bearbeiten</button>
-    </form>
+<form method="get" action="AdminSicht.php"> 
+    <select name="fragebogen_id">
+        <?php 
+        $dropdownFragebogen = new Fragebogen(); 
+        echo $dropdownFragebogen->getFragebogenDropdownOptions($conn); 
+        ?> 
+    </select>
+    <button type="submit">Bearbeiten</button>
+</form>
+ 
+</select>
+ </select>
 
     <a href="Startseite.html">Zurück zur Hauptseite</a>
 </body>
-<link rel="stylesheet" href="schön.css">
+
 
 </html>
