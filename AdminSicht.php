@@ -52,15 +52,17 @@ if (isset($_GET['fragebogen_id'])) {
     
     <div class="form-group">
     <form action="NewFrageEingabe.php" method="post">
-        <div class="form-group">
-            <label for="fragetext">fragetext:</label>
-            <input type="text" id="fragetext" name="fragetext" required>
-        </div>
+    <div class="form-group">
+        <label for="fragetext">fragetext:</label>
+        <input type="text" id="fragetext" name="fragetext" required>
+    </div>
 
-        <input type="hidden" id="fragebogen_id" name="fragebogen_id" value="<?php echo $fragebogenId; ?>">
+    
 
-        <button type="submit">Frage hinzufügen</button>
-        <button type="button" onclick="window.location.href='fragen_anzeigen.php'">Fragen anzeigen</button>
+    <input type="hidden" id="fragebogen_id" name="fragebogen_id" value="<?php echo $fragebogenId; ?>">
+
+    <button type="submit">Frage hinzufügen</button>
+    <button type="button" onclick="window.location.href='fragen_anzeigen.php?fragebogen_id=<?php echo $fragebogenId; ?>'">Fragen anzeigen</button> </form>
     </form>
     </div>
 
