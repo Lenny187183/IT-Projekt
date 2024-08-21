@@ -36,35 +36,58 @@ if (isset($_GET['fragebogen_id'])) {
   
 ?>
 
+<?php
+if ($fragebogenId) {
+    $sqlFragen = "SELECT id, fragetext FROM frage WHERE fragebogen_id = ?";
+    $stmtFragen = $conn->prepare($sqlFragen);
+    $stmtFragen->bind_param("i", $fragebogenId);
+    $stmtFragen->execute();
+    $resultFragen = $stmtFragen->get_result();
+    $fragen = $resultFragen->fetch_all(MYSQLI_ASSOC);
+}
+?>
 
 <!DOCTYPE html>
 <html lang="de">
-    
 <head>
     <meta charset="UTF-8">
     <title>Admin-Bereich</title>
+    <link rel="stylesheet" href="schön.css">
 </head>
 <body>
     <h1>Fragebogen bearbeiten</h1>
 
     <h2>Aktueller Fragebogen: <?php echo $fragebogenTitel; ?></h2> 
 
-    
-    <div class="form-group">
-    <form action="NewFrageEingabe.php" method="post">
-    <div class="form-group">
-        <label for="fragetext">fragetext:</label>
-        <input type="text" id="fragetext" name="fragetext" required>
-    </div>
+    <?php if ($fragebogenId): ?>
+        <div class="form-group">
+            <form action="NewFrageEingabe.php" method="post">
+                <div class="form-group">
+                    <label for="fragetext">Fragetext:</label>
+                    <input type="text" id="fragetext" name="fragetext" required>
+                </div>
 
-    
+                <input type="hidden" id="fragebogen_id" name="fragebogen_id" value="<?php echo $fragebogenId; ?>">
 
-    <input type="hidden" id="fragebogen_id" name="fragebogen_id" value="<?php echo $fragebogenId; ?>">
+                <button type="submit">Frage hinzufügen</button>
+                <button type="button" onclick="window.location.href='fragen_anzeigen.php?fragebogen_id=<?php echo $fragebogenId; ?>'">Fragen anzeigen</button>
+            </form>
+        </div>
 
-    <button type="submit">Frage hinzufügen</button>
-    <button type="button" onclick="window.location.href='fragen_anzeigen.php?fragebogen_id=<?php echo $fragebogenId; ?>'">Fragen anzeigen</button> </form>
-    </form>
-    </div>
+        <h2>Vorhandene Fragen</h2>
+        <?php if (!empty($fragen)): ?> 
+            <select id="fragenDropdown">
+                <?php foreach ($fragen as $frage): ?>
+                    <option value="<?= $frage['id'] ?>"><?= $frage['fragetext'] ?></option>
+                <?php endforeach; ?>
+            </select>
+        <?php else: ?>
+            <p>Keine Fragen gefunden.</p>
+        <?php endif; ?>
+
+    <?php else: ?>
+        </form>
+    <?php endif; ?>
 
     <a href="FragebogenErstellen.php">Zurück zur Hauptseite</a>
     <link rel="stylesheet" href="schön.css">
