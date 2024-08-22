@@ -76,11 +76,15 @@ if ($fragebogenId) {
 
         <h2>Vorhandene Fragen</h2>
         <?php if (!empty($fragen)): ?> 
-            <select id="fragenDropdown">
-                <?php foreach ($fragen as $frage): ?>
-                    <option value="<?= $frage['id'] ?>"><?= $frage['fragetext'] ?></option>
-                <?php endforeach; ?>
-            </select>
+            <form action="AntwortBearbeitung.php" method="get">
+                <select name="frage_id">
+                    <?php foreach ($fragen as $frage): ?>
+                        <option value="<?= $frage['id'] ?>"><?= $frage['fragetext'] ?></option>
+                    <?php endforeach; ?>
+                </select>
+                <input type="hidden" name="fragebogen_id" value="<?php echo $fragebogenId; ?>">
+                <button type="submit">Antworten bearbeiten</button>
+            </form>
         <?php else: ?>
             <p>Keine Fragen gefunden.</p>
         <?php endif; ?>

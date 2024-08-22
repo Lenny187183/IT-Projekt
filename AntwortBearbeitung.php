@@ -28,8 +28,21 @@ if ($fragebogenId && $frageId) {
     $fragetext = $frageObjekt->getFragetext();
 
     // Antworten zur Frage laden
-    $antwort = new Antwort();
-    $antworten = $antwort->ladenAntwortenFuerFrage($conn, $frageId);
+    $antwort = new Antwort(null, $frageId, null); // Neue Antwort, daher id = null, frage_id wird übergeben, antworttext ist noch leer
+$antworten = $antwort->ladenAntwortenFuerFrage($conn, $frageId);
+
+    // Formularverarbeitung zum Hinzufügen einer neuen Antwort
+    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['neue_antwort'])) {
+        $neueAntwortText = $_POST['antworttext'];
+
+        // Neue Antwort erstellen und speichern
+        $neueAntwort = new Antwort(null, $frageId, $neueAntwortText);
+        $neueAntwort->speichernInDatenbank($conn);
+
+        // Seite neu laden, um die neue Antwort im Dropdown anzuzeigen
+        header("Location: AntwortBearbeiten.php?fragebogen_id=$fragebogenId&frage_id=$frageId");
+        exit();
+    }
 } else {
     $fragebogenTitel = "Kein Fragebogen ausgewählt";
     $fragetext = "Keine Frage ausgewählt";
@@ -51,7 +64,7 @@ if ($fragebogenId && $frageId) {
     <h2>Aktuelle Frage: <?php echo $fragetext; ?></h2>
 
     <?php if ($frageId): ?>
-        <form action="AntwortHinzufuegen.php" method="post">
+        <form action="AntwortEingabe.php" method="post"> 
             <input type="hidden" name="frage_id" value="<?php echo $frageId; ?>">
             <input type="hidden" name="fragebogen_id" value="<?php echo $fragebogenId; ?>">
 
@@ -60,7 +73,7 @@ if ($fragebogenId && $frageId) {
                 <input type="text" id="antworttext" name="antworttext" required>
             </div>
 
-            <button type="submit">Antwort hinzufügen</button>
+            <button type="submit" name="neue_antwort">Antwort hinzufügen</button>
         </form>
 
         <h2>Vorhandene Antworten</h2>
@@ -70,6 +83,7 @@ if ($fragebogenId && $frageId) {
                     <option value="<?= $antwort['id'] ?>"><?= $antwort['antworttext'] ?></option>
                 <?php endforeach; ?>
             </select>
+            </form> </div>
         <?php else: ?>
             <p>Keine Antworten gefunden.</p>
         <?php endif; ?>

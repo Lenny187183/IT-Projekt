@@ -38,7 +38,13 @@ class antwort {
 
 	// Methoden zum Laden und Speichern in der Datenbank
     
-
+    public function ladenAntwortenFuerFrage($conn, $frageId) {
+        $sql = "SELECT id, antworttext FROM antwort WHERE frage_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $frageId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_all(MYSQLI_ASSOC);
     
-}
+}}
 ?>
