@@ -23,7 +23,8 @@ if ($conn->connect_error) {
         $_SESSION['neuer_fragebogen_id'] = $stmt->insert_id;
 
         // Weiterleitung zur AdminSicht.html des neuen Fragebogens
-        header("Location: AdminSicht.php?fragebogen_id=" . $stmt->insert_id); 
+        //header("Location: AdminSicht.php?fragebogen_id=" . $stmt->insert_id); 
+        header("Location: FragebogenErstellen.php");
         exit();
     }}
     // Fragebögen laden
