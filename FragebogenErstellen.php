@@ -39,7 +39,7 @@ if ($conn->connect_error) {
     <title>Fragebogen erstellen/auswählen</title>
 </head>
 <body>
-    <h1>Fragebogen jetzt erstellen oder auswählen</h1>
+    <h1>Fragebogen erstellen oder auswählen</h1>
 
     <h2>Neuen Fragebogen erstellen</h2>
     <form method="post">
