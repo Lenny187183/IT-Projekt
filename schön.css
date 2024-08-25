@@ -1,111 +1,139 @@
-/* style.css */
-
 /* Allgemeines Styling */
 body {
-	font-family: 'Open Sans', Arial, sans-serif; /* Schriftart */
-	line-height: 1.6;
-	background-color: #f4f4f4; /* Hintergrundfarbe */
-	color: #333; /* Textfarbe */
-	margin: 0; /* Entfernt standardmäßige Ränder */
-  }
-  
-  .container {
-	max-width: 960px; /* Maximale Breite des Inhaltsbereichs */
-	margin: 0 auto; /* Zentriert den Inhaltsbereich */
-	padding: 20px;
-  }
-  
-  /* Überschriften */
-  h1, h2, h3 {
-	color: #e00f0f; /* Primärfarbe für Überschriften */
-	margin-top: 20px;
-  }
-  
-  h1 {
-	font-size: 2.5em; /* Größere Schrift für die Hauptüberschrift */
-	text-align: center;
-  }
-  
-  /* Formulare */
-  form {
-	background-color: #fff; /* Weißer Hintergrund für das Formular */
-	padding: 20px;
-	border-radius: 5px;
-	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Leichter Schatten */
-  }
-  
-  label {
-	display: block;
-	margin-bottom: 5px;
-  }
-  
-  input[type="radio"],
-  input[type="checkbox"] {
-	margin-right: 10px;
-  }
-  
-  textarea {
-	width: 100%;
-	padding: 10px;
-	border: 1px solid #ccc;
-	border-radius: 5px;
-	box-sizing: border-box;
-	resize: vertical;
-  }
-  
-  /* Buttons */
-  button,
-  input[type="submit"] {
-	background-color: #e00f0f; /* Primärfarbe für Buttons */
-	color: white;
-	padding: 10px 15px;
-	border: none;
-	border-radius: 5px;
-	cursor: pointer;
-  }
-  
-  /* Links */
-  a {
-	color: #e00f0f; /* Primärfarbe für Links */
-	text-decoration: none;
-  }
-  
-  a:hover {
-	text-decoration: underline;
-  }
-  
-  /* ISKA Button (Anpassung an das Design der Nürnberger Webseite) */
-  .iska-button {
-	display: block;
-	text-align: center;
-	margin-top: 30px;
-	background-color: #4CAF50; /* Grün für den ISKA-Button */
-	color: white;
-	padding: 15px 20px;
-	border: none;
-	border-radius: 5px;
-  }
-  
-  
-  
-  /* Fehlermeldung */
-  .error-message {
-	color: red;
-  }
+    font-family: 'Open Sans', Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f5f5f5; /* Helles Grau für den Hintergrund */
+    color: #333; 
+    margin: 0;
+    padding: 0;
+}
 
-  .radio-group {  /* Neue Klasse für die Gruppierung */
-	display: flex;
-	align-items: center; /* Zentriert vertikal */
-  }
-  
-  .radio-group input[type="radio"] {
-	margin-right: 5px; /* Abstand zwischen Radio-Button und Label */
-  }
-  
-  
-  
-  /* Einrückung für Unterpunkte (a, b, c) */
-  .radio-group div {
-	text-indent: 20px;
-  }
-  
+.container {
+    max-width: 900px; /* Breite des Containers leicht erhöht für mehr Platz */
+    margin: 20px auto;
+    padding: 20px;
+}
+
+/* Überschriften */
+h1, h2, h3 {
+    color: #ff3c00; /* Primärfarbe: Ein freundliches Blau */
+    font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+h1 {
+    font-size: 2.5em;
+    text-align: center;
+}
+
+h2 {
+    font-size: 1.8em;
+	gap: 24px;
+}
+
+h3 {
+    font-size: 1.5em;
+}
+
+/* Formulare */
+form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px; /* Etwas stärker abgerundete Ecken */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input[type="text"],
+select,
+textarea {
+    width: calc(100% - 22px);
+    padding: 12px; /* Etwas mehr Padding für bessere Benutzerfreundlichkeit */
+    border: 1px solid #ced4da; /* Hellerer Grauton für Rahmen */
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    font-size: 16px; /* Schriftgröße für bessere Lesbarkeit */
+}
+
+textarea {
+    resize: vertical;
+}
+
+/* Buttons */
+button,
+input[type="submit"] {
+    background-color: #ff3c00; /* Primärfarbe für Buttons */
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-size: 16px; /* Schriftgröße für bessere Lesbarkeit */
+}
+
+button:hover,
+input[type="submit"]:hover {
+    background-color: #ff3c00; /* Dunklerer Blauton beim Hover */
+}
+
+/* Links */
+a {
+    color: #ff3c00; 
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Dropdown-Menü */
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+/* Listen */
+ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.vorhandene-fragen ul {
+    padding-left: 20px; 
+}
+
+/* Fehlermeldung */
+.error-message {
+    color: red;
+    font-weight: bold;
+}
+
+/* Radio-Gruppen */
+.radio-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px; /* Abstand zwischen Radio-Gruppen */
+}
+
+.radio-group input[type="radio"] {
+    margin-right: 5px;
+}
+
+.radio-group div {
+    text-indent: 20px;
+}
