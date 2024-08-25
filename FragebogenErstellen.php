@@ -49,7 +49,8 @@ if ($conn->connect_error) {
     </form>
 
     <h2>Vorhandene Fragebögen</h2>
-<form method="get" action="AdminSicht.php"> 
+    <h2>Vorhandene Fragebögen</h2>
+<form action="AdminSicht.php" method="get"> 
     <select name="fragebogen_id">
         <?php 
         $dropdownFragebogen = new Fragebogen(); 
@@ -57,7 +58,19 @@ if ($conn->connect_error) {
         ?> 
     </select>
     <button type="submit">Bearbeiten</button>
+    <button type="button" onclick="anzeigenFragebogen()">Anzeigen</button> <--- Neuer Button 
 </form>
+
+<script>
+function anzeigenFragebogen() {
+  const selectedFragebogenId = document.querySelector('select[name="fragebogen_id"]').value;
+  if (selectedFragebogenId) {
+    window.location.href = `FragebogenAnzeigen.php?fragebogen_id=${selectedFragebogenId}`;
+  } else {
+    alert("Bitte wählen Sie einen Fragebogen aus.");
+  }
+}
+</script>
  
 </select>
  </select>
