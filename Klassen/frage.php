@@ -68,5 +68,14 @@ class frage {
 
         $stmt->execute();
     }
+
+    public function ladenFragenFuerFragebogen($conn, $fragebogenId) {
+        $sql = "SELECT id, fragetext FROM frage WHERE fragebogen_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $fragebogenId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
 }
 ?>

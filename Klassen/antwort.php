@@ -5,7 +5,7 @@ class antwort {
     private $antworttext;
 
     // Konstruktor
-    public function __construct($id, $frage_id, $antworttext) {
+    public function __construct($id = null, $frage_id = null, $antworttext = null) {
         $this->id = $id;
         $this->frage_id = $frage_id;
         $this->antworttext = $antworttext;
