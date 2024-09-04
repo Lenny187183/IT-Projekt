@@ -49,7 +49,8 @@ if ($conn->connect_error) {
     </form>
 
     <h2>Vorhandene Fragebögen</h2>
-<form method="get" action="AdminSicht.php"> 
+    <h2>Vorhandene Fragebögen</h2>
+<form action="AdminSicht.php" method="get"> 
     <select name="fragebogen_id">
         <?php 
         $dropdownFragebogen = new Fragebogen(); 
