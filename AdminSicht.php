@@ -70,7 +70,6 @@ if ($fragebogenId) {
                 <input type="hidden" id="fragebogen_id" name="fragebogen_id" value="<?php echo $fragebogenId; ?>">
 
                 <button type="submit">Frage hinzufügen</button>
-                <button type="button" onclick="window.location.href='fragen_anzeigen.php?fragebogen_id=<?php echo $fragebogenId; ?>'">Fragen anzeigen</button>
             </form>
         </div>
 

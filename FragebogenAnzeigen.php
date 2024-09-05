@@ -66,6 +66,8 @@ if ($fragebogenId) {
             </div>
         <?php endforeach; ?>
 
+        <button type="button" onclick="window.location.href='fragen_anzeigen.php?fragebogen_id=<?php echo $fragebogenId; ?>'">Weiterleiten</button>
+
         <a href="FragebogenErstellen.php" class="btn">Zurück zur Auswahl</a>
     </div>
 </body>

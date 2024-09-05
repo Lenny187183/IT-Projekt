@@ -36,9 +36,7 @@ if ($conn->connect_error) {
 <!DOCTYPE html>
 <html>
 <link rel="stylesheet" href="schön.css">
-<head>
-    <title>Fragebogen erstellen/auswählen</title>
-</head>
+
 <body>
     <h1>Fragebogen erstellen oder auswählen</h1>
 
@@ -48,7 +46,7 @@ if ($conn->connect_error) {
         <button type="submit" name="neuer_fragebogen">Erstellen</button>
     </form>
 
-    <h2>Vorhandene Fragebögen</h2>
+    
     <h2>Vorhandene Fragebögen</h2>
 <form action="AdminSicht.php" method="get"> 
     <select name="fragebogen_id">
