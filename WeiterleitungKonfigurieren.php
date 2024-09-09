@@ -46,23 +46,20 @@ if ($fragebogenId) {
             $antworten = $antwort->ladenAntwortenFuerFrage($conn, $frageId);
 
             // Formularverarbeitung zum Speichern der Weiterleitung
-            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['speichern_weiterleitung'])) {
                 $zielUrl = $_POST['ziel_url'];
                 $ausgewaehlteAntworten = isset($_POST['antworten']) ? $_POST['antworten'] : [];
-
-                // Weiterleitung erstellen und speichern
-                $weiterleitung = new Weiterleitung(null, $zielUrl);
-                $weiterleitung->speichernInDatenbank($conn);
-
-                // Antwortkombination erstellen und speichern
-                $antwortkombination = new Antwortkombination(null, $weiterleitung->getId());
+            
+                // Antwortkombination erstellen und speichern (direkt mit Ziel-URL)
+                $antwortkombination = new Antwortkombination(null, $zielUrl);
                 $antwortkombination->speichernInDatenbank($conn);
-
+            
                 // Antworten zur Kombination hinzufügen
                 $antwortkombination->antwortenHinzufuegen($conn, $ausgewaehlteAntworten);
-
+            
                 echo "Weiterleitung erfolgreich gespeichert!";
             }
+            
         } else {
             $fragetext = "Keine Frage ausgewählt";
             $antworten = [];
@@ -127,6 +124,6 @@ if ($fragebogenId) {
         <p>Bitte wählen Sie zuerst eine Frage aus.</p>
     <?php endif; ?>
 
-    <a href="FragebogenErstellen.php?fragebogen_id=<?php echo $fragebogenId; ?>">Zurück zur Fragenübersicht</a>
+    <a href="FragebogenErstellen.php?fragebogen_id=<?php echo $fragebogenId; ?>">Zurück zur Fragebogenübersicht</a>
 </body>
 </html>

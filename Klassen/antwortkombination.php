@@ -1,32 +1,32 @@
 <?php
 class antwortkombination {
     private $id;
-    private $weiterleitung_id;
+    private $ziel_url; 
 
-    // Konstruktor
-    public function __construct($id = null, $weiterleitung_id = null) {
+    // Constructor
+    public function __construct($id = null, $ziel_url = null) {
         $this->id = $id;
-        $this->weiterleitung_id = $weiterleitung_id;
+        $this->ziel_url = $ziel_url;
     }
 
-    // Getter und Setter
+    // Getters and Setters
     public function getId() {
         return $this->id;
     }
 
-    public function getWeiterleitungId() {
-        return $this->weiterleitung_id;
+    public function getZielUrl() {
+        return $this->ziel_url;
     }
 
     public function setId($id) {
         $this->id = $id;
     }
 
-    public function setWeiterleitungId($weiterleitung_id) {
-        $this->weiterleitung_id = $weiterleitung_id;
+    public function setZielUrl($ziel_url) {
+        $this->ziel_url = $ziel_url;
     }
 
-    // Methoden zum Laden und Speichern in der Datenbank
+    // Database interaction methods
     public function ladenAusDatenbank($conn, $id) {
         $sql = "SELECT * FROM antwortkombination WHERE id = ?";
         $stmt = $conn->prepare($sql);
@@ -35,58 +35,48 @@ class antwortkombination {
         $result = $stmt->get_result();
 
         if ($result->num_rows == 1) {
-            $row = $result->fetch_assoc();   
+            $row = $result->fetch_assoc(); 
 
             $this->id = $row["id"];
-            $this->weiterleitung_id = $row["weiterleitung_id"];
+            $this->ziel_url = $row["ziel_url"];
         } else {
-            // Option 1: Throw an exception
-            // throw new Exception("Antwortkombination nicht gefunden.");
-
-            // Option 2: Return false
-            return false; 
+            throw new Exception("Antwortkombination nicht gefunden."); 
         }
     }
 
     public function speichernInDatenbank($conn) {
-        // ... (your existing code for insert/update)
+        if ($this->id == null) {
+            // Insert new Antwortkombination
+            $sql = "INSERT INTO antwortkombination (ziel_url) VALUES (?)";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("s", $this->ziel_url); 
+        } else {
+            // Update existing Antwortkombination
+            $sql = "UPDATE antwortkombination SET ziel_url = ? WHERE id = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("si", $this->ziel_url, $this->id);
+        }
 
         if ($stmt->execute()) {
-            // ... 
+            // If it's a new Antwortkombination, set the ID
+            if ($this->id == null) {
+                $this->id = $stmt->insert_id;
+            }
+            return true; // Success
         } else {
-            // Option 1: Throw an exception
-            // throw new Exception("Fehler beim Speichern der Antwortkombination: " . $stmt->error);
-
-            // Option 2: Return false
-            return false; 
+            return false; // Failure
         }
     }
 
-    // Methode zum Hinzufügen von Antworten zu dieser Kombination
+    // Method to add answers to this combination
     public function antwortenHinzufuegen($conn, $antwortIds) {
         $stmt = $conn->prepare("INSERT INTO antwortkombination_antwort (antwortkombination_id, antwort_id) VALUES (?, ?)");
         foreach ($antwortIds as $antwortId) {
             $stmt->bind_param("ii", $this->id, $antwortId);
-            if (!$stmt->execute()) {
-                // Option 1: Throw an exception
-                // throw new Exception("Fehler beim Hinzufügen der Antwort zur Kombination: " . $stmt->error);
-
-                // Option 2: Return false
-                return false; 
-            }
+            $stmt->execute();
         }
-        return true; // Erfolg
     }
+}
+?>
 
-    // Methode zum Abrufen der zugehörigen Antworten
-    public function getAntworten($conn) {
-        $sql = "SELECT antwort_id FROM antwortkombination_antwort WHERE antwortkombination_id = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("i", $this->id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        return $result->fetch_all(MYSQLI_ASSOC); 
-    }
-}
-}
 ?>
