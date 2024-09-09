@@ -57,7 +57,9 @@ if ($conn->connect_error) {
     </select>
     <button type="submit">Bearbeiten</button>
     <button type="button" onclick="anzeigenFragebogen()">Anzeigen</button> 
-    </form>
+    <button type="button" onclick="weiterleitungBearbeiten()">Weiterleitung bearbeiten</button>
+
+
 
 
  
@@ -76,6 +78,15 @@ if ($conn->connect_error) {
   const selectedFragebogenId = document.querySelector('select[name="fragebogen_id"]').value;
   if (selectedFragebogenId) {
     window.location.href = `FragebogenAnzeigen.php?fragebogen_id=${selectedFragebogenId}`; 
+  } else {
+    alert("Bitte wählen Sie einen Fragebogen aus.");
+  }
+}
+
+function weiterleitungBearbeiten() {
+  const selectedFragebogenId = document.querySelector('select[name="fragebogen_id"]').value;
+  if (selectedFragebogenId) {
+    window.location.href = `WeiterleitungKonfigurieren.php?fragebogen_id=${selectedFragebogenId}`;
   } else {
     alert("Bitte wählen Sie einen Fragebogen aus.");
   }

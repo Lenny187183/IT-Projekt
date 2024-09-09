@@ -1,4 +1,4 @@
-<?<php>
+<?php
 class weiterleiten {
     private $id;
     private $antwort_id;
@@ -68,5 +68,5 @@ class weiterleiten {
         $stmt->execute();
     }
 }
-</php>
+?>
 

@@ -1,5 +1,5 @@
 <?php
-class Antwortkombination {
+class antwortkombination {
     private $id;
     private $weiterleitung_id;
 
@@ -38,34 +38,27 @@ class Antwortkombination {
             $row = $result->fetch_assoc();   
 
             $this->id = $row["id"];
-            $this->weiterleitung_id   
- = $row["weiterleitung_id"];
+            $this->weiterleitung_id = $row["weiterleitung_id"];
         } else {
-            throw new Exception("Antwortkombination nicht gefunden."); 
+            // Option 1: Throw an exception
+            // throw new Exception("Antwortkombination nicht gefunden.");
+
+            // Option 2: Return false
+            return false; 
         }
     }
 
     public function speichernInDatenbank($conn) {
-        if ($this->id == null) {
-            // Neue Antwortkombination einfügen
-            $sql = "INSERT INTO antwortkombination (weiterleitung_id) VALUES (?)";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param("i", $this->weiterleitung_id);
-        } else {
-            // Bestehende Antwortkombination aktualisieren
-            $sql = "UPDATE antwortkombination SET weiterleitung_id = ? WHERE id = ?";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param("ii", $this->weiterleitung_id, $this->id);
-        }
+        // ... (your existing code for insert/update)
 
         if ($stmt->execute()) {
-            // Wenn es sich um eine neue Antwortkombination handelt, setze die ID
-            if ($this->id == null) {
-                $this->id = $stmt->insert_id;
-            }
-            return true; // Erfolg
+            // ... 
         } else {
-            return false; // Fehler
+            // Option 1: Throw an exception
+            // throw new Exception("Fehler beim Speichern der Antwortkombination: " . $stmt->error);
+
+            // Option 2: Return false
+            return false; 
         }
     }
 
@@ -74,8 +67,26 @@ class Antwortkombination {
         $stmt = $conn->prepare("INSERT INTO antwortkombination_antwort (antwortkombination_id, antwort_id) VALUES (?, ?)");
         foreach ($antwortIds as $antwortId) {
             $stmt->bind_param("ii", $this->id, $antwortId);
-            $stmt->execute();
+            if (!$stmt->execute()) {
+                // Option 1: Throw an exception
+                // throw new Exception("Fehler beim Hinzufügen der Antwort zur Kombination: " . $stmt->error);
+
+                // Option 2: Return false
+                return false; 
+            }
         }
+        return true; // Erfolg
     }
+
+    // Methode zum Abrufen der zugehörigen Antworten
+    public function getAntworten($conn) {
+        $sql = "SELECT antwort_id FROM antwortkombination_antwort WHERE antwortkombination_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $this->id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_all(MYSQLI_ASSOC); 
+    }
+}
 }
 ?>
