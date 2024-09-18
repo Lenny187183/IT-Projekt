@@ -15,29 +15,31 @@ $antworten = isset($_POST['antworten']) ? $_POST['antworten'] : [];
 if (is_array($antworten) && !empty($antworten)) {
     // Antwortkombinationen abrufen, die zu den ausgewählten Antworten passen
     $sql = "SELECT ak.ziel_url 
-            FROM antwortkombination ak
-            JOIN antwortkombination_antwort aka ON ak.id = aka.antwortkombination_id
-            JOIN antwort a ON aka.antwort_id = a.id 
-            WHERE ";
+        FROM antwortkombination ak
+        JOIN antwortkombination_antwort aka ON ak.id = aka.antwortkombination_id
+        JOIN antwort a ON aka.antwort_id = a.id 
+        WHERE ";
 
     $whereClauses = [];
     $params = [];
     $types = "";
 
-    foreach ($antworten as $frageId => $antwortIds) {
-        // Ensure $antwortIds is an array
-        if (!is_array($antwortIds)) {
-            $antwortIds = [$antwortIds]; 
-        }
+   foreach ($antworten as $frageId => $antwortIds) {
+    // Ensure $antwortIds is an array
+    if (!is_array($antwortIds)) {
+        $antwortIds = [$antwortIds]; 
+    }
 
-        $whereClauses[] = "aka.antwort_id IN (" . implode(',', $antwortIds) . ") AND a.frage_id = ?";
-        $params[] = $frageId;
-        $types .= "i"; 
+    $whereClauses[] = "aka.antwort_id IN (" . implode(',', $antwortIds) . ") AND a.frage_id = ?"; // Reference 'aka.antwort_id'
+    $params[] = $frageId;
+    $types .= "i"; 
+
+    $anzahlAntwortenFuerFrage = count($antwortIds); 
     }
 
     $sql .= implode(" AND ", $whereClauses);
     $sql .= " GROUP BY ak.id
-              HAVING COUNT(DISTINCT aka.antwort_id) = " . count($antworten); 
+              HAVING COUNT(DISTINCT aka.antwort_id) = " . $anzahlAntwortenFuerFrage; 
 
     $stmt = $conn->prepare($sql);
 
@@ -50,20 +52,19 @@ if (is_array($antworten) && !empty($antworten)) {
     $stmt->execute();
     $result = $stmt->get_result();
 
-    // Weiterleitung zur Ziel-URL (falls eine passende Kombination gefunden wurde)
-    if ($result->num_rows > 0) {
+    // Weiterleitung nur, wenn genau eine eindeutige Ziel-URL gefunden wurde
+    if ($result->num_rows == 1) { 
         $row = $result->fetch_assoc();
         header("Location: " . $row['ziel_url']);
         exit();
     } else {
-        // Keine passende Kombination gefunden, zeige eine Meldung an oder leite zu einer Standardseite weiter
-        echo "Keine passende Weiterleitung gefunden."; 
+        // Keine passende oder eindeutige Kombination gefunden
+        echo "Keine passende oder eindeutige Weiterleitung gefunden."; 
     }
 } else {
-    // Fehlerbehandlung, falls $antworten kein Array ist oder leer
+    // Fehlerbehandlung
     echo "Fehler: Bitte wählen Sie mindestens eine Antwort aus.";
 }
 
 $conn->close();
 ?>
-Verwende den Code mit Vorsicht.
