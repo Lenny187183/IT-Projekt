@@ -4,6 +4,7 @@ require_once 'Klassen/Frage.php';
 require_once 'Klassen/Antwort.php';
 require_once 'Klassen/weiterleiten.php';
 require_once 'Klassen/Antwortkombination.php';
+require_once 'Klassen/antwortkombination_antwort.php';
 
 // Datenbankverbindung
 $conn = new mysqli('localhost', 'testserver', '123', 'fragen'); // Passe die Verbindungsdaten an
@@ -50,12 +51,15 @@ if ($fragebogenId) {
                 $zielUrl = $_POST['ziel_url'];
                 $ausgewaehlteAntworten = isset($_POST['antworten']) ? $_POST['antworten'] : [];
             
-                // Antwortkombination erstellen und speichern (direkt mit Ziel-URL)
+                // 1. Antwortkombination erstellen und speichern (direkt mit Ziel-URL)
                 $antwortkombination = new Antwortkombination(null, $zielUrl);
                 $antwortkombination->speichernInDatenbank($conn);
             
-                // Antworten zur Kombination hinzufügen
-                $antwortkombination->antwortenHinzufuegen($conn, $ausgewaehlteAntworten);
+                // 2. Antworten zur Kombination hinzufügen (nachdem die Antwortkombination gespeichert wurde)
+                foreach ($ausgewaehlteAntworten as $antwortId) {
+                    $verbindung = new AntwortkombinationAntwort(null, $antwortkombination->getId(), $antwortId); // Hier die ID der Antwortkombination verwenden
+                    $verbindung->speichernInDatenbank($conn);
+                }
             
                 echo "Weiterleitung erfolgreich gespeichert!";
             }

@@ -46,27 +46,27 @@ class antwortkombination {
 
     public function speichernInDatenbank($conn) {
         if ($this->id == null) {
-            // Insert new Antwortkombination
+            // Neue Antwortkombination einfügen
             $sql = "INSERT INTO antwortkombination (ziel_url) VALUES (?)";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param("s", $this->ziel_url); 
         } else {
-            // Update existing Antwortkombination
+            // Bestehende Antwortkombination aktualisieren
             $sql = "UPDATE antwortkombination SET ziel_url = ? WHERE id = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param("si", $this->ziel_url, $this->id);
         }
 
         if ($stmt->execute()) {
-            // If it's a new Antwortkombination, set the ID
+            // Wenn es sich um eine neue Antwortkombination handelt, setze die ID
             if ($this->id == null) {
                 $this->id = $stmt->insert_id;
             }
-            return true; // Success
+            return true; // Erfolg
         } else {
-            return false; // Failure
+            return false; // Fehler
         }
-    }
+}
 
     // Method to add answers to this combination
     public function antwortenHinzufuegen($conn, $antwortIds) {
@@ -79,4 +79,3 @@ class antwortkombination {
 }
 ?>
 
-?>

@@ -1,6 +1,6 @@
 <?php
 
-class AntwortkombinationAntwort {
+class AntwortkombinationAntwort  {
     private $id;
     private $antwortkombination_id;
     private $antwort_id;
@@ -46,11 +46,10 @@ class AntwortkombinationAntwort {
         $result = $stmt->get_result();
 
         if ($result->num_rows == 1) {
-            $row = $result->fetch_assoc();   
+            $row = $result->fetch_assoc(); 
 
             $this->id = $row["id"];
-            $this->antwortkombination_id   
- = $row["antwortkombination_id"];
+            $this->antwortkombination_id = $row["antwortkombination_id"];
             $this->antwort_id = $row["antwort_id"];
         } else {
             throw new Exception("Antwortkombination_Antwort nicht gefunden."); 
@@ -69,16 +68,16 @@ class AntwortkombinationAntwort {
             $stmt = $conn->prepare($sql);
             $stmt->bind_param("iii", $this->antwortkombination_id, $this->antwort_id, $this->id);
         }
-
+    
         if ($stmt->execute()) {
             // Wenn es sich um einen neuen Eintrag handelt, setze die ID
-            if ($this->id == null) {
-                $this->id = $stmt->insert_id;
+            if ($this->id == null) { 
+                $this->id = $stmt->insert_id; 
             }
             return true; // Erfolg
         } else {
             return false; // Fehler
         }
-    }
+    } // <-- Removed the extra closing curly brace here
 }
 ?>
