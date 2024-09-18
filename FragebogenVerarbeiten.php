@@ -10,15 +10,14 @@ if ($conn->connect_error) {
 }
 
 // Antworten aus dem Formular holen
-$antworten = isset($_POST['antworten']) ? $_POST['antworten'] : []; // Initialisiere $antworten als leeres Array, falls der Schlüssel nicht existiert
+$antworten = isset($_POST['antworten']) ? $_POST['antworten'] : []; 
 
-
-// Antwortkombinationen abrufen, die zu den ausgewählten Antworten passen
-if (is_array($antworten) && !empty($antworten)) { // Überprüfung hinzufügen
+if (is_array($antworten) && !empty($antworten)) {
     // Antwortkombinationen abrufen, die zu den ausgewählten Antworten passen
     $sql = "SELECT ak.ziel_url 
             FROM antwortkombination ak
             JOIN antwortkombination_antwort aka ON ak.id = aka.antwortkombination_id
+            JOIN antwort a ON aka.antwort_id = a.id 
             WHERE ";
 
     $whereClauses = [];
@@ -26,7 +25,12 @@ if (is_array($antworten) && !empty($antworten)) { // Überprüfung hinzufügen
     $types = "";
 
     foreach ($antworten as $frageId => $antwortIds) {
-        $whereClauses[] = "aka.antwort_id IN (" . implode(',', $antwortIds) . ") AND aka.frage_id = ?";
+        // Ensure $antwortIds is an array
+        if (!is_array($antwortIds)) {
+            $antwortIds = [$antwortIds]; 
+        }
+
+        $whereClauses[] = "aka.antwort_id IN (" . implode(',', $antwortIds) . ") AND a.frage_id = ?";
         $params[] = $frageId;
         $types .= "i"; 
     }
@@ -36,6 +40,12 @@ if (is_array($antworten) && !empty($antworten)) { // Überprüfung hinzufügen
               HAVING COUNT(DISTINCT aka.antwort_id) = " . count($antworten); 
 
     $stmt = $conn->prepare($sql);
+
+    // Check if prepared statement is successful
+    if($stmt === false) {
+        die('Fehler bei der Abfragevorbereitung: ' . $conn->error);
+    }
+
     $stmt->bind_param($types, ...$params); 
     $stmt->execute();
     $result = $stmt->get_result();
@@ -56,3 +66,4 @@ if (is_array($antworten) && !empty($antworten)) { // Überprüfung hinzufügen
 
 $conn->close();
 ?>
+Verwende den Code mit Vorsicht.
