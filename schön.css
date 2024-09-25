@@ -1,11 +1,10 @@
-/* Allgemeines Styling */
 body {
     font-family: 'Open Sans', Arial, sans-serif;
     line-height: 1.6;
     background-color: #f5f5f5; /* Helles Grau für den Hintergrund */
     color: #333; 
     margin: 0;
-    padding: 0;
+    padding: 0 20px; /* Abstand links und rechts für den gesamten Seiteninhalt */
 }
 
 .container {
@@ -20,6 +19,7 @@ h1, h2, h3 {
     font-weight: bold;
     margin-top: 20px;
     margin-bottom: 10px;
+    margin-left: 20px; /* Linker Abstand für Überschriften */
 }
 
 h1 {
@@ -29,7 +29,7 @@ h1 {
 
 h2 {
     font-size: 1.8em;
-	gap: 24px;
+    gap: 24px;
 }
 
 h3 {
@@ -39,10 +39,11 @@ h3 {
 /* Formulare */
 form {
     background-color: #fff;
-    padding: 20px;
+    padding: 20px 30px; /* Etwas mehr Padding links für bessere Benutzerfreundlichkeit */
     border-radius: 8px; /* Etwas stärker abgerundete Ecken */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
+    margin-left: 20px; /* Linker Abstand für Formulare */
 }
 
 label {
@@ -110,11 +111,7 @@ select {
 /* Listen */
 ul {
     list-style: none;
-    padding-left: 0;
-}
-
-.vorhandene-fragen ul {
-    padding-left: 20px; 
+    padding-left: 20px; /* Einzug für alle Listen */
 }
 
 /* Fehlermeldung */
@@ -128,6 +125,7 @@ ul {
     display: flex;
     align-items: center;
     margin-bottom: 10px; /* Abstand zwischen Radio-Gruppen */
+    margin-left: 20px; /* Linker Abstand für Radio-Gruppen */
 }
 
 .radio-group input[type="radio"] {

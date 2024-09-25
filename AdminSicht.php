@@ -93,6 +93,6 @@ if ($fragebogenId) {
     <?php endif; ?>
 
     <a href="FragebogenErstellen.php">Zurück zur Hauptseite</a>
-    <link rel="stylesheet" href="schön.css">
+    <link rel="stylesheet" href="FragebogenErstellen.css">
 </body>
 </html>

@@ -55,7 +55,7 @@ $antworten = $antwort->ladenAntwortenFuerFrage($conn, $frageId);
 <head>
     <meta charset="UTF-8">
     <title>Antworten bearbeiten</title>
-    <link rel="stylesheet" href="schön.css">
+    <link rel="stylesheet" href="FragebogenErstellen.css">
 </head>
 <body>
     <h1>Antworten bearbeiten</h1>

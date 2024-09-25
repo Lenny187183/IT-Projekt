@@ -1,0 +1,60 @@
+body {
+    font-family: 'Open Sans', Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f5f5f5; 
+    color: #333;
+    margin: 0;
+    padding: 0 20px; /* Abstand links und rechts für den gesamten Seiteninhalt */
+}
+
+header {
+    text-align: center; /* Zentriere den Header-Text */
+    padding: 20px 0; /* Füge etwas Abstand oben und unten hinzu */
+}
+
+main {
+    display: flex; /* Verwende Flexbox für die Anordnung der Abschnitte */
+    justify-content: space-around; /* Abschnitte gleichmäßig verteilen */
+}
+
+section {
+    width: 45%; /* Jeder Abschnitt nimmt etwa die Hälfte der Breite ein */
+    padding: 20px;
+    border: 1px solid #ddd; /* Optionaler Rahmen für bessere Trennung */
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+h1, h2 {
+    color: #ff3c00;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+h1 {
+    font-size: 2em;
+}
+
+h2 {
+    font-size: 1.5em;
+}
+
+button {
+    background-color: #ff3c00; 
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #d32f2f; 
+}
+
+footer {
+    text-align: center;
+    padding: 10px 0;
+    border-top: 1px solid #ddd; /* Optionale Linie über dem Footer */
+}

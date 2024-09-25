@@ -35,7 +35,7 @@ if ($conn->connect_error) {
 
 <!DOCTYPE html>
 <html>
-<link rel="stylesheet" href="schön.css">
+<link rel="stylesheet" href="FragebogenErstellen.css">
 
 <body>
     <h1>Fragebogen erstellen oder auswählen</h1>

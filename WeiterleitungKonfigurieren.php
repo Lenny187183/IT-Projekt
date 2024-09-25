@@ -84,7 +84,7 @@ if ($fragebogenId) {
 
 <!DOCTYPE html>
 <html>
-<link rel="stylesheet" href="schön.css">
+<link rel="stylesheet" href="FragebogenErstellen.css">
 
 <head>
     <title>Weiterleitung konfigurieren</title>
