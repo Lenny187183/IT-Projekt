@@ -22,15 +22,22 @@ if ($conn->connect_error) {
         
         $_SESSION['neuer_fragebogen_id'] = $stmt->insert_id;
 
-        // Weiterleitung zur AdminSicht.html des neuen Fragebogens
-        //header("Location: AdminSicht.php?fragebogen_id=" . $stmt->insert_id); 
-        header("Location: FragebogenErstellen.php");
+        // Aktiven Fragebogen setzen
+        $sqlAktivSetzen = "UPDATE fragebogen SET aktiv = IF(id = ?, TRUE, FALSE)";
+        $stmtAktivSetzen = $conn->prepare($sqlAktivSetzen);
+        $stmtAktivSetzen->bind_param("i", $_SESSION['neuer_fragebogen_id']);
+        $stmtAktivSetzen->execute();
+
+        // Weiterleitung zur Startseite mit der fragebogen_id in der Session
+        header("Location: Startseite.php"); 
         exit();
-    }}
-    // Fragebögen laden
-    $sql = "SELECT id, titel FROM fragebogen";
-    $result = $conn->query($sql);
-    $fragebogen = $result->fetch_all(MYSQLI_ASSOC);
+    }
+}
+
+// Fragebögen laden
+$sql = "SELECT id, titel FROM fragebogen";
+$result = $conn->query($sql);
+$fragebogen = $result->fetch_all(MYSQLI_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -46,49 +53,58 @@ if ($conn->connect_error) {
         <button type="submit" name="neuer_fragebogen">Erstellen</button>
     </form>
 
-    
+    <h2>Aktiven Fragebogen auswählen</h2>
+    <form method="post" action="aktivenFragebogenSetzen.php"> 
+        <select name="fragebogen_id">
+            <?php 
+            $dropdownFragebogen = new Fragebogen(); 
+            echo $dropdownFragebogen->getFragebogenDropdownOptions($conn); 
+            ?> 
+        </select>
+        <button type="submit">Aktiven Fragebogen setzen</button>
+    </form>
+
     <h2>Vorhandene Fragebögen</h2>
-<form action="AdminSicht.php" method="get"> 
-    <select name="fragebogen_id">
-        <?php 
-        $dropdownFragebogen = new Fragebogen(); 
-        echo $dropdownFragebogen->getFragebogenDropdownOptions($conn); 
-        ?> 
-    </select>
-    <button type="submit">Bearbeiten</button>
-    <button type="button" onclick="anzeigenFragebogen()">Anzeigen</button> 
-    <button type="button" onclick="weiterleitungBearbeiten()">Weiterleitung bearbeiten</button>
+    <form action="AdminSicht.php" method="get"> 
+        <select name="fragebogen_id">
+            <?php 
+            echo $dropdownFragebogen->getFragebogenDropdownOptions($conn); 
+            ?> 
+        </select>
+        <button type="submit">Bearbeiten</button>
+        <button type="button" onclick="anzeigenFragebogen()">Anzeigen</button> 
+        <button type="button" onclick="weiterleitungBearbeiten()">Weiterleitung bearbeiten</button>
 
+        <button type="submit" name="loeschen" onclick="return confirm('Möchten Sie diesen Fragebogen wirklich löschen?') && setFragebogenId(this.form)">Löschen</button> 
+        <input type="hidden" name="fragebogen_id" value=""> 
+    </form>
 
+    <a href="Startseite.php">Zurück zur Hauptseite</a>
 
+    <script>
+        function anzeigenFragebogen() {
+            const selectedFragebogenId = document.querySelector('select[name="fragebogen_id"]').value;
+            if (selectedFragebogenId) {
+                window.location.href = `FragebogenAnzeigen.php?fragebogen_id=${selectedFragebogenId}`; 
+            } else {
+                alert("Bitte wählen Sie einen Fragebogen aus.");
+            }
+        }
 
- 
-</select>
- </select>
+        function weiterleitungBearbeiten() {
+            const selectedFragebogenId = document.querySelector('select[name="fragebogen_id"]').value;
+            if (selectedFragebogenId) {
+                window.location.href = `WeiterleitungKonfigurieren.php?fragebogen_id=${selectedFragebogenId}`;
+            } else {
+                alert("Bitte wählen Sie einen Fragebogen aus.");
+            }
+        }
 
-    <a href="Startseite.html">Zurück zur Hauptseite</a>
+        function setFragebogenId(form) {
+            const selectedFragebogenId = document.querySelector('select[name="fragebogen_id"]').value;
+            form.querySelector('input[name="fragebogen_id"]').value = selectedFragebogenId;
+            return true; // Formular absenden erlauben
+        }
+    </script>
 </body>
-
-
-
 </html>
-
-<Script>
-    function anzeigenFragebogen() {
-  const selectedFragebogenId = document.querySelector('select[name="fragebogen_id"]').value;
-  if (selectedFragebogenId) {
-    window.location.href = `FragebogenAnzeigen.php?fragebogen_id=${selectedFragebogenId}`; 
-  } else {
-    alert("Bitte wählen Sie einen Fragebogen aus.");
-  }
-}
-
-function weiterleitungBearbeiten() {
-  const selectedFragebogenId = document.querySelector('select[name="fragebogen_id"]').value;
-  if (selectedFragebogenId) {
-    window.location.href = `WeiterleitungKonfigurieren.php?fragebogen_id=${selectedFragebogenId}`;
-  } else {
-    alert("Bitte wählen Sie einen Fragebogen aus.");
-  }
-}
-</Script>

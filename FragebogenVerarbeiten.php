@@ -13,52 +13,39 @@ if ($conn->connect_error) {
 $antworten = isset($_POST['antworten']) ? $_POST['antworten'] : []; 
 
 if (is_array($antworten) && !empty($antworten)) {
-    // Antwortkombinationen abrufen, die zu den ausgewählten Antworten passen
-    $sql = "SELECT ak.ziel_url 
-        FROM antwortkombination ak
-        JOIN antwortkombination_antwort aka ON ak.id = aka.antwortkombination_id
-        JOIN antwort a ON aka.antwort_id = a.id 
-        WHERE ";
+    $antwortkombinationen = isset($_POST['antwortkombinationen']) ? $_POST['antwortkombinationen'] : [];
 
-    $whereClauses = [];
-    $params = [];
-    $types = "";
+    // Alle relevanten Antwortkombinationen abrufen
+    $sql = "SELECT ak.id, ak.ziel_url 
+            FROM antwortkombination ak
+            JOIN antwortkombination_antwort aka ON ak.id = aka.antwortkombination_id
+            WHERE aka.antwort_id IN (" . implode(',', $antworten) . ")
+            GROUP BY ak.id, ak.ziel_url";
 
-   foreach ($antworten as $frageId => $antwortIds) {
-    // Ensure $antwortIds is an array
-    if (!is_array($antwortIds)) {
-        $antwortIds = [$antwortIds]; 
+    $result = $conn->query($sql);
+    $weiterleitungGefunden = false;
+
+    while ($row = $result->fetch_assoc()) {
+        $kombinationId = $row['id'];
+        $zielUrl = $row['ziel_url'];
+
+        // Überprüfen, ob alle Antworten dieser Kombination ausgewählt wurden
+        $alleAntwortenAusgewaehlt = true;
+        foreach ($antwortkombinationen as $antwortId => $kombinationIds) {
+            if (in_array($kombinationId, $kombinationIds) && !in_array($antwortId, $antworten)) {
+                $alleAntwortenAusgewaehlt = false;
+                break;
+            }
+        }
+
+        if ($alleAntwortenAusgewaehlt) {
+            $weiterleitungGefunden = true;
+            header("Location: " . $zielUrl);
+            exit();
+        }
     }
 
-    $whereClauses[] = "aka.antwort_id IN (" . implode(',', $antwortIds) . ") AND a.frage_id = ?"; // Reference 'aka.antwort_id'
-    $params[] = $frageId;
-    $types .= "i"; 
-
-    $anzahlAntwortenFuerFrage = count($antwortIds); 
-    }
-
-    $sql .= implode(" AND ", $whereClauses);
-    $sql .= " GROUP BY ak.id
-              HAVING COUNT(DISTINCT aka.antwort_id) = " . $anzahlAntwortenFuerFrage; 
-
-    $stmt = $conn->prepare($sql);
-
-    // Check if prepared statement is successful
-    if($stmt === false) {
-        die('Fehler bei der Abfragevorbereitung: ' . $conn->error);
-    }
-
-    $stmt->bind_param($types, ...$params); 
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    // Weiterleitung nur, wenn genau eine eindeutige Ziel-URL gefunden wurde
-    if ($result->num_rows == 1) { 
-        $row = $result->fetch_assoc();
-        header("Location: " . $row['ziel_url']);
-        exit();
-    } else {
-        // Keine passende oder eindeutige Kombination gefunden
+    if (!$weiterleitungGefunden) {
         echo "Keine passende oder eindeutige Weiterleitung gefunden."; 
     }
 } else {

@@ -4,11 +4,13 @@
 class fragebogen {
     private $id;
     private $titel;
+    private $aktiv;
 
     // Konstruktor
-    public function __construct($id = null, $titel = null) {
+    public function __construct($id = null, $titel = null, $aktiv = false) {
         $this->id = $id;
         $this->titel = $titel;
+        $this->aktiv = is_bool($aktiv) ? $aktiv : false;    
     }
 
     // Getter und Setter
@@ -27,6 +29,21 @@ class fragebogen {
     public function setTitel($titel) {
         $this->titel = $titel;
     }
+    
+    public function getAktiv() {
+        return $this->aktiv;
+    }
+
+    public function setAktiv($aktiv) {
+        // Nur setzen, wenn der übergebene Wert ein Boolean ist
+        if (is_bool($aktiv)) {
+            $this->aktiv = $aktiv;
+        } else {
+            echo "Error: aktiv muss ein Boolean-Wert sein.";
+        }
+    }
+
+
 
     // Methoden zum Laden und Speichern in der Datenbank
     public function ladenAusDatenbank($conn, $id) {
