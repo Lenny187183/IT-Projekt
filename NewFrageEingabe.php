@@ -1,11 +1,13 @@
 <?php
+require_once 'config.php';
+
 
 $fragetext = $_POST['fragetext'];
 $fragebogenidFK = $_POST['fragebogen_id'];
 $antwort = $_POST['antworttext'];
 $frage_id = $_POST['frage_id'];
 
-$conn = new mysqli('localhost', 'testserver', '123', 'fragen');
+$conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
 if($conn->connect_error){
     die('connection Failed : '.$conn->connect_error);
 }else{

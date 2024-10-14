@@ -1,8 +1,10 @@
 <?php
 require_once 'Klassen/fragebogen.php';
+require_once 'config.php';
+
 
 // Datenbankverbindung
-$conn = new mysqli('localhost', 'testserver', '123', 'fragen'); // Passe die Verbindungsdaten an
+$conn = new mysqli($db_host, $db_user, $db_pass, $db_name); // Passe die Verbindungsdaten an
 
 // Verbindung prüfen
 if ($conn->connect_error) {

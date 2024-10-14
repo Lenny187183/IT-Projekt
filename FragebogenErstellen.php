@@ -1,11 +1,13 @@
 
 <?php
 require_once 'Klassen/fragebogen.php';
+require_once 'config.php';
+
 
 session_start();
 
 // Datenbankverbindung
-$conn = new mysqli('localhost', 'testserver', '123', 'fragen'); // Passe die Verbindungsdaten an
+$conn = new mysqli($db_host, $db_user, $db_pass, $db_name); // Passe die Verbindungsdaten an
 
 // Verbindung prüfen
 if ($conn->connect_error) {
@@ -29,7 +31,7 @@ if ($conn->connect_error) {
         $stmtAktivSetzen->execute();
 
         // Weiterleitung zur Startseite mit der fragebogen_id in der Session
-        header("Location: Startseite.php"); 
+        //header("Location: Startseite.php"); 
         exit();
     }
 }
