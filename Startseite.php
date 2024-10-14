@@ -48,7 +48,7 @@ $conn->close();
 
         <section id="mitarbeiter">
             <h2>Für Mitarbeiter des Sozialamts</h2>
-            <button onclick="window.location.href='Login.html'">Anmelden</button>
+            <button onclick="window.location.href='login.html'">Anmelden</button>
         </section>
     </main>
 

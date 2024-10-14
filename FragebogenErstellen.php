@@ -32,7 +32,7 @@ if ($conn->connect_error) {
 
         // Weiterleitung zur Startseite mit der fragebogen_id in der Session
         //header("Location: Startseite.php"); 
-        exit();
+        //exit();
     }
 }
 
