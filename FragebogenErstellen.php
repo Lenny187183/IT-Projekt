@@ -77,8 +77,7 @@ $fragebogen = $result->fetch_all(MYSQLI_ASSOC);
         <button type="button" onclick="anzeigenFragebogen()">Anzeigen</button> 
         <button type="button" onclick="weiterleitungBearbeiten()">Weiterleitung bearbeiten</button>
 
-        <button type="submit" name="loeschen" onclick="return confirm('Möchten Sie diesen Fragebogen wirklich löschen?') && setFragebogenId(this.form)">Löschen</button> 
-        <input type="hidden" name="fragebogen_id" value=""> 
+        
     </form>
 
     <a href="Startseite.php">Zurück zur Hauptseite</a>
