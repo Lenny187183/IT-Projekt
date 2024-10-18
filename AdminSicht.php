@@ -1,12 +1,12 @@
 
 <?php
-
 require_once 'Klassen/fragebogen.php'; // Stellen Sie sicher, dass die Klasse eingebunden wird
+require_once 'config.php';
 
 session_start();
 
 // Datenbankverbindung (wie im vorherigen Skript)
-$conn = new mysqli('localhost', 'testserver', '123', 'fragen'); 
+$conn = new mysqli($db_host, $db_user, $db_pass, $db_name); 
 
 // Verbindung prüfen
 if ($conn->connect_error) {
