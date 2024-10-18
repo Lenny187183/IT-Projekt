@@ -94,3 +94,4 @@ $antworten = $antwort->ladenAntwortenFuerFrage($conn, $frageId);
     <a href="AdminSicht.php?fragebogen_id=<?php echo $fragebogenId; ?>">Zurück zur Fragenübersicht</a>
 </body>
 </html>
+
