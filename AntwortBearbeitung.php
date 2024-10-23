@@ -1,7 +1,7 @@
 <?php
-require_once 'Klassen/Fragebogen.php';
-require_once 'Klassen/Frage.php';
-require_once 'Klassen/Antwort.php';
+require_once 'Klassen/fragebogen.php';
+require_once 'Klassen/frage.php';
+require_once 'Klassen/antwort.php';
 require_once 'config.php';
 
 

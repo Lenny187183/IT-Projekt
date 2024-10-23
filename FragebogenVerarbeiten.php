@@ -1,5 +1,5 @@
 <?php
-require_once 'Klassen/Antwortkombination.php';
+require_once 'Klassen/antwortkombination.php';
 require_once 'config.php';
 
 
