@@ -1,4 +1,6 @@
 <?php
+require_once 'config.php';
+
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 
   
@@ -10,13 +12,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     // Database Connection
 
-    $host = "localhost";
-    $dbusername = "testserver";
-    $dbpassword = "123";
-    $dbname = "fragen";
+   
 
 
-    $conn = new mysqli($host, $dbusername, $dbpassword, $dbname);
+    $conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
 
     if($conn->connect_error){
         die("Connection failed: ". $conn->connect_error);

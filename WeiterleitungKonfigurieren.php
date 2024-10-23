@@ -5,9 +5,11 @@ require_once 'Klassen/Antwort.php';
 require_once 'Klassen/weiterleiten.php';
 require_once 'Klassen/Antwortkombination.php';
 require_once 'Klassen/antwortkombination_antwort.php';
+require_once 'config.php';
+
 
 // Datenbankverbindung
-$conn = new mysqli('localhost', 'testserver', '123', 'fragen'); // Passe die Verbindungsdaten an
+$conn = new mysqli($db_host, $db_user, $db_pass, $db_name); // Passe die Verbindungsdaten an
 
 // Verbindung prüfen
 if ($conn->connect_error) {

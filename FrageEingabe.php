@@ -1,4 +1,5 @@
 <?php
+require_once 'config.php';
 
 
 $frage = $_POST['frage'];
@@ -8,7 +9,7 @@ $antwortmoeglichkeit = $_POST['antwortmöglichkeit'];
 
 
 
-$conn = new mysqli('localhost', 'testserver', '123', 'fragen');
+$conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
 if($conn->connect_error){
 	die('connection Failed : '.$conn->connect_error);
 }else{
