@@ -4,8 +4,7 @@ require_once 'config.php';
 
 
 // Datenbankverbindung
-$conn = new mysqli($db_host, $db_user, $db_pass, $db_name); 
-
+$conn = new mysqli('localhost', 'testserver', '123', 'fragen'); 
 // Verbindung prüfen
 if ($conn->connect_error) {
     die('Verbindung fehlgeschlagen: ' . $conn->connect_error);
