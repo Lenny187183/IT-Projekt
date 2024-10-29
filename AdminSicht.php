@@ -3,7 +3,7 @@
 require_once 'Klassen/fragebogen.php'; // Stellen Sie sicher, dass die Klasse eingebunden wird
 require_once 'config.php';
 
-session_start();
+
 
 // Datenbankverbindung (wie im vorherigen Skript)
 $conn = new mysqli($db_host, $db_user, $db_pass, $db_name); 
