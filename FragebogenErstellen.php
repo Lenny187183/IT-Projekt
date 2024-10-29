@@ -80,7 +80,7 @@ $fragebogen = $result->fetch_all(MYSQLI_ASSOC);
         
     </form>
 
-    <a href="Startseite.php">Zurück zur Hauptseite</a>
+    <a href="StartseiteMitarbeiter.php">Zurück zur Hauptseite</a>
 
     <script>
         function anzeigenFragebogen() {

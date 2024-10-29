@@ -2,7 +2,6 @@
 require_once 'Klassen/fragebogen.php';
 require_once 'config.php';
 
-
 // Datenbankverbindung
 $conn = new mysqli($db_host, $db_user, $db_pass, $db_name); // Passe die Verbindungsdaten an
 
@@ -20,12 +19,16 @@ if (isset($_POST['fragebogen_id'])) {
     $stmtAktivSetzen->bind_param("i", $fragebogenId);
 
     if ($stmtAktivSetzen->execute()) {
-        echo "Aktiver Fragebogen erfolgreich gesetzt.";
+        // Weiterleitung zu FragebogenErstellen.php
+        header("Location: FragebogenErstellen.php"); 
+        exit();
     } else {
-        echo "Fehler beim Setzen des aktiven Fragebogens: " . $stmtAktivSetzen->error;
+        // JavaScript-Code zum Anzeigen des Popups mit Fehlermeldung
+        echo '<script>alert("Fehler beim Setzen des aktiven Fragebogens: ' . $stmtAktivSetzen->error . '");</script>'; 
     }
 } else {
-    echo "Keine Fragebogen-ID angegeben.";
+    // JavaScript-Code zum Anzeigen des Popups mit Fehlermeldung
+    echo '<script>alert("Keine Fragebogen-ID angegeben.");</script>'; 
 }
 
 $conn->close();
