@@ -80,40 +80,47 @@ foreach ($antwortkombinationen as $kombination) {
 <head>
     <title>Fragebogen anzeigen</title>
     <link rel="stylesheet" href="schön.css">
+    <script>
+        function resetRadioButtons() {
+            // Alle Radio-Buttons im Formular abrufen
+            const radios = document.querySelectorAll('input[type="radio"]');
+            radios.forEach(radio => {
+                radio.checked = false; // Radio-Button deaktivieren
+            });
+        }
+    </script>
 </head>
 <body>
-    <div class="container"> 
+    <div class="container">
         <h1><?php echo $fragebogenTitel; ?></h1>
 
-        <form method="post" action="FragebogenVerarbeiten.php"> 
-
-        <?php foreach ($fragen as $frage): ?>
-            <div class="frage">
-                <h3><?php echo $frage['fragetext']; ?></h3>
-
-                <?php
-                // Antworten zur Frage laden
-                $antwort = new Antwort();
-                $antworten = $antwort->ladenAntwortenFuerFrage($conn, $frage['id']);
-                ?>
-                <div class="antworten">
-                    <?php foreach ($antworten as $antwort): ?>
-                        <label>
-                            <input type="radio" name="antworten[<?php echo $frage['id']; ?>]" value="<?php echo $antwort['id']; ?>" required> 
-                            <?php echo $antwort['antworttext']; ?>
-                            <?php if (isset($antwortkombinationenMap[$antwort['id']])): ?>
-                                <span class="weiterleitungs-urls">(Weiterleitungen: <?php echo implode(', ', $antwortkombinationenMap[$antwort['id']]); ?>)</span>
-                            <?php endif; ?>
-                        </label><br>
-                    <?php endforeach; ?>
+        <form method="post" action="FragebogenVerarbeiten.php">
+            <?php foreach ($fragen as $frage): ?>
+                <div class="frage">
+                    <h3><?php echo $frage['fragetext']; ?></h3>
+                    <?php
+                    // Antworten zur Frage laden
+                    $antwort = new Antwort();
+                    $antworten = $antwort->ladenAntwortenFuerFrage($conn, $frage['id']);
+                    ?>
+                    <div class="antworten">
+                        <?php foreach ($antworten as $antwort): ?>
+                            <label>
+                                <input type="radio" name="antworten[<?php echo $frage['id']; ?>]" value="<?php echo $antwort['id']; ?>">
+                                <?php echo $antwort['antworttext']; ?>
+                                <?php if (isset($antwortkombinationenMap[$antwort['id']])): ?>
+                                    <span class="weiterleitungs-urls">(Weiterleitungen: <?php echo implode(', ', $antwortkombinationenMap[$antwort['id']]); ?>)</span>
+                                <?php endif; ?>
+                            </label><br>
+                        <?php endforeach; ?>
+                    </div>
                 </div>
-            </div>
-        <?php endforeach; ?>
+            <?php endforeach; ?>
 
-        <button type="submit">Weiterleiten</button> 
-
-        <a href="FragebogenErstellen.php" class="btn">Zurück zur Auswahl</a>
-        </form> 
+            <button type="submit">Weiterleiten</button>
+            <button type="button" onclick="resetRadioButtons()">Zurücksetzen</button> <!-- Neuer Button -->
+            <a href="FragebogenErstellen.php" class="btn">Zurück zur Auswahl</a>
+        </form>
     </div>
 </body>
 </html>

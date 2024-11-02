@@ -56,29 +56,27 @@ $fragebogen = $result->fetch_all(MYSQLI_ASSOC);
     </form>
 
     <h2>Aktiven Fragebogen auswählen</h2>
-    <form method="post" action="aktivenFragebogenSetzen.php"> 
-        <select name="fragebogen_id">
-            <?php 
-            $dropdownFragebogen = new Fragebogen(); 
-            echo $dropdownFragebogen->getFragebogenDropdownOptions($conn); 
-            ?> 
-        </select>
-        <button type="submit">Aktiven Fragebogen setzen</button>
-    </form>
+<form method="post" action="aktivenFragebogenSetzen.php"> 
+    <select name="aktiver_fragebogen_id"> <option value="">-- Bitte auswählen --</option> 
+        <?php 
+        $dropdownFragebogen = new Fragebogen(); 
+        echo $dropdownFragebogen->getFragebogenDropdownOptions($conn); 
+        ?> 
+    </select>
+    <button type="submit">Aktiven Fragebogen setzen</button>
+</form>
 
-    <h2>Vorhandene Fragebögen</h2>
-    <form action="AdminSicht.php" method="get"> 
-        <select name="fragebogen_id">
-            <?php 
-            echo $dropdownFragebogen->getFragebogenDropdownOptions($conn); 
-            ?> 
-        </select>
-        <button type="submit">Bearbeiten</button>
-        <button type="button" onclick="anzeigenFragebogen()">Anzeigen</button> 
-        <button type="button" onclick="weiterleitungBearbeiten()">Weiterleitung bearbeiten</button>
-
-        
-    </form>
+<h2>Vorhandene Fragebögen</h2>
+<form action="AdminSicht.php" method="get"> 
+    <select name="fragebogen_id">
+        <?php 
+        echo $dropdownFragebogen->getFragebogenDropdownOptions($conn); 
+        ?> 
+    </select>
+    <button type="submit">Bearbeiten</button>
+    <button type="button" onclick="anzeigenFragebogen()">Anzeigen</button> 
+    <button type="button" onclick="weiterleitungBearbeiten()">Weiterleitung bearbeiten</button>
+</form>
 
     <a href="StartseiteMitarbeiter.php">Zurück zur Hauptseite</a>
 

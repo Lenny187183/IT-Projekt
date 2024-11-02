@@ -1,10 +1,9 @@
 <?php
-require_once 'Klassen/antwortkombination.php';
+require_once 'Klassen/Antwortkombination.php';
 require_once 'config.php';
 
-
 // Datenbankverbindung
-$conn = new mysqli($db_host, $db_user, $db_pass, $db_name); 
+$conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
 
 // Verbindung prüfen
 if ($conn->connect_error) {
@@ -12,7 +11,7 @@ if ($conn->connect_error) {
 }
 
 // Antworten aus dem Formular holen
-$antworten = isset($_POST['antworten']) ? $_POST['antworten'] : []; 
+$antworten = isset($_POST['antworten']) ? $_POST['antworten'] : [];
 
 if (is_array($antworten) && !empty($antworten)) {
     $antwortkombinationen = isset($_POST['antwortkombinationen']) ? $_POST['antwortkombinationen'] : [];
@@ -26,10 +25,12 @@ if (is_array($antworten) && !empty($antworten)) {
 
     $result = $conn->query($sql);
     $weiterleitungGefunden = false;
+    $zielUrls = []; // Array zum Speichern der Ziel-URLs
 
     while ($row = $result->fetch_assoc()) {
         $kombinationId = $row['id'];
         $zielUrl = $row['ziel_url'];
+        $zielUrls[] = $zielUrl; // Ziel-URL zum Array hinzufügen
 
         // Überprüfen, ob alle Antworten dieser Kombination ausgewählt wurden
         $alleAntwortenAusgewaehlt = true;
@@ -40,15 +41,22 @@ if (is_array($antworten) && !empty($antworten)) {
             }
         }
 
-        if ($alleAntwortenAusgewaehlt) {
-            $weiterleitungGefunden = true;
-            header("Location: " . $zielUrl);
-            exit();
-        }
+        // if ($alleAntwortenAusgewaehlt) {
+        //  $weiterleitungGefunden = true;
+        //  header("Location: " . $zielUrl);
+        //  exit();
+        // }
+    }
+
+    // Überprüfen, ob alle Ziel-URLs gleich sind
+    if (count(array_unique($zielUrls)) === 1) { // Nur eine eindeutige URL
+        $weiterleitungGefunden = true;
+        header("Location: " . $zielUrls[0]); // Zur ersten (und einzigen) URL weiterleiten
+        exit();
     }
 
     if (!$weiterleitungGefunden) {
-        echo "Keine passende oder eindeutige Weiterleitung gefunden."; 
+        echo "Keine passende oder eindeutige Weiterleitung gefunden.";
     }
 } else {
     // Fehlerbehandlung
