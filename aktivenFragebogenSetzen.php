@@ -10,8 +10,8 @@ if ($conn->connect_error) {
     die('Verbindung fehlgeschlagen: ' . $conn->connect_error);
 }
 
-if (isset($_POST['fragebogen_id'])) {
-    $fragebogenId = $_POST['fragebogen_id'];
+if (isset($_POST['aktiver_fragebogen_id'])) { // Korrigierter Name des Formularfelds
+    $fragebogenId = $_POST['aktiver_fragebogen_id'];
 
     // Aktiven Fragebogen setzen
     $sqlAktivSetzen = "UPDATE fragebogen SET aktiv = IF(id = ?, TRUE, FALSE)";
