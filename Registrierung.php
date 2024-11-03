@@ -53,7 +53,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <title>Mitarbeiter registrieren</title>
-    <link rel="stylesheet" href="FragebogenErstellen.css"> </head>
+    <link rel="stylesheet" href="FragebogenErstellen.css"> 
+</head>
 <body>
     <h1>Mitarbeiter registrieren</h1>
     <form action="" method="post">
@@ -65,10 +66,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="form-group">
             <label for="password">Passwort:</label>
             <input type="password" id="password" name="password" required>   
-
+ 
         </div>
-        <button type="submit">Registrieren</button>   
-
+        <button type="submit">Registrieren</button> 
     </form>
+
+    <a href="Login.html">Zurück 
+ zum Login</a> 
 </body>
 </html>
