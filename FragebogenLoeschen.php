@@ -2,6 +2,7 @@
 require_once 'Klassen/fragebogen.php';
 require_once 'config.php';
 
+session_start(); // Sitzung starten, um auf Benutzerdaten zuzugreifen
 
 // Datenbankverbindung
 $conn = new mysqli($db_host, $db_user, $db_pass, $db_name); 
@@ -11,65 +12,50 @@ if ($conn->connect_error) {
     die('Verbindung fehlgeschlagen: ' . $conn->connect_error);
 }
 
-// Fragebogen-ID aus URL-Parametern abrufen
-if (isset($_GET['fragebogen_id'])) {
-    $fragebogenId = $_GET['fragebogen_id'];
+// Fragebogen-ID und Passwort aus POST-Daten abrufen
+if (isset($_POST['fragebogen_id'], $_POST['passwort'])) {
+    $fragebogenId = $_POST['fragebogen_id'];
+    $eingegebenesPasswort = $_POST['passwort'];
 
-    // Transaktion starten
-    $conn->begin_transaction();
+    // Benutzerdaten aus der Datenbank laden (verwende die Session-ID)
+    $sqlBenutzer = "SELECT username, password FROM mitarbeiter WHERE id = ?";
+    $stmtBenutzer = $conn->prepare($sqlBenutzer);
+    $stmtBenutzer->bind_param("i", $_SESSION['benutzer_id']);
+    $stmtBenutzer->execute();
+    $resultBenutzer = $stmtBenutzer->get_result();
+    $benutzer = $resultBenutzer->fetch_assoc();
 
-    try {
-        // 1. Antwortenkombination_antwort löschen
-        $sqlAntwortenKombinationAntwortLoeschen = "DELETE FROM antwortkombination_antwort WHERE antwortkombination_id IN (SELECT id FROM antwortkombination WHERE frage_id IN (SELECT id FROM frage WHERE fragebogen_id = ?))";
-        $stmtAntwortenKombinationAntwortLoeschen = $conn->prepare($sqlAntwortenKombinationAntwortLoeschen);
-        $stmtAntwortenKombinationAntwortLoeschen->bind_param("i", $fragebogenId);
-        if (!$stmtAntwortenKombinationAntwortLoeschen->execute()) {
-            throw new Exception("Fehler beim Löschen von Antwortenkombination_antwort: " . $stmtAntwortenKombinationAntwortLoeschen->error);
+    // Passwort überprüfen
+    if (password_verify($eingegebenesPasswort, $benutzer['password'])) {
+
+        try {
+            // Fragebogen löschen
+            $sql = "DELETE FROM fragebogen WHERE id = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("i", $fragebogenId);
+
+            if ($stmt->execute()) {
+                // Erfolgsmeldung mit Fragebogentitel
+                $fragebogen = new Fragebogen();
+                $fragebogen->ladenAusDatenbank($conn, $fragebogenId);
+                $fragebogenTitel = $fragebogen->getTitel();
+                echo "Fragebogen '$fragebogenTitel' erfolgreich gelöscht!";
+
+                // Weiterleitung zur Fragebogenübersicht
+                header("Location: FragebogenErstellen.php"); 
+                exit();
+            } else {
+                // Fehlermeldung mit detaillierten Informationen
+                throw new Exception("Fehler beim Löschen des Fragebogens: " . $stmt->error . " (SQLSTATE: " . $stmt->sqlstate . ")");
+            }
+        } catch (mysqli_sql_exception $e) {
+            echo "Fehler beim Löschen des Fragebogens: " . $e->getMessage();
         }
-
-        // 2. Antwortkombination löschen
-        $sqlAntwortkombinationLoeschen = "DELETE FROM antwortkombination WHERE frage_id IN (SELECT id FROM frage WHERE fragebogen_id = ?)";
-        $stmtAntwortkombinationLoeschen = $conn->prepare($sqlAntwortkombinationLoeschen);
-        $stmtAntwortkombinationLoeschen->bind_param("i", $fragebogenId);
-        if (!$stmtAntwortkombinationLoeschen->execute()) {
-            throw new Exception("Fehler beim Löschen von Antwortkombination: " . $stmtAntwortkombinationLoeschen->error);
-        }
-
-        // 3. Antworten löschen
-        $sqlAntwortenLoeschen = "DELETE FROM antwort WHERE frage_id IN (SELECT id FROM frage WHERE fragebogen_id = ?)";
-        $stmtAntwortenLoeschen = $conn->prepare($sqlAntwortenLoeschen);
-        $stmtAntwortenLoeschen->bind_param("i", $fragebogenId);
-        if (!$stmtAntwortenLoeschen->execute()) {
-            throw new Exception("Fehler beim Löschen von Antworten: " . $stmtAntwortenLoeschen->error);
-        }
-
-        // 4. Fragen löschen
-        $sqlFragenLoeschen = "DELETE FROM frage WHERE fragebogen_id = ?";
-        $stmtFragenLoeschen = $conn->prepare($sqlFragenLoeschen);
-        $stmtFragenLoeschen->bind_param("i", $fragebogenId);
-        if (!$stmtFragenLoeschen->execute()) {
-            throw new Exception("Fehler beim Löschen von Fragen: " . $stmtFragenLoeschen->error);
-        }
-
-        // 5. Fragebogen löschen
-        $sqlFragebogenLoeschen = "DELETE FROM fragebogen WHERE id = ?";
-        $stmtFragebogenLoeschen = $conn->prepare($sqlFragebogenLoeschen);
-        $stmtFragebogenLoeschen->bind_param("i", $fragebogenId);
-        if (!$stmtFragebogenLoeschen->execute()) {
-            throw new Exception("Fehler beim Löschen des Fragebogens: " . $stmtFragebogenLoeschen->error);
-        }
-
-        // Transaktion bestätigen
-        $conn->commit();
-        echo "Fragebogen und alle zugehörigen Daten erfolgreich gelöscht.";
-    } catch (Exception $e) {
-        // Bei einem Fehler die Transaktion rückgängig machen
-        $conn->rollback();
-        echo "Fehler beim Löschen des Fragebogens: " . $e->getMessage();
+    } else {
+        echo "Falsches Passwort.";
     }
-
 } else {
-    echo "Keine Fragebogen-ID angegeben.";
+    echo "Keine Fragebogen-ID oder Passwort angegeben.";
 }
 
 $conn->close();

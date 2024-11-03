@@ -21,7 +21,7 @@ if ($conn->connect_error) {
         $stmt->bind_param("s", $titel);
         $stmt->execute();
 
-        
+
         $_SESSION['neuer_fragebogen_id'] = $stmt->insert_id;
 
         // Aktiven Fragebogen setzen
@@ -31,8 +31,8 @@ if ($conn->connect_error) {
         $stmtAktivSetzen->execute();
 
         // Weiterleitung zur Startseite mit der fragebogen_id in der Session
-        //header("Location: Startseite.php"); 
-        //exit();
+        header("Location: Startseite.php"); 
+        exit();
     }
 }
 
@@ -56,29 +56,31 @@ $fragebogen = $result->fetch_all(MYSQLI_ASSOC);
     </form>
 
     <h2>Aktiven Fragebogen auswählen</h2>
-<form method="post" action="aktivenFragebogenSetzen.php"> 
-    <select name="aktiver_fragebogen_id"> <option value="">-- Bitte auswählen --</option> 
-        <?php 
-        $dropdownFragebogen = new Fragebogen(); 
-        echo $dropdownFragebogen->getFragebogenDropdownOptions($conn); 
-        ?> 
-    </select>
-    <button type="submit">Aktiven Fragebogen setzen</button>
-</form>
+    <form method="post" action="aktivenFragebogenSetzen.php"> 
+        <select name="aktiver_fragebogen_id">
+            <option value="">-- Bitte auswählen --</option> 
+            <?php 
+            $dropdownFragebogen = new Fragebogen(); 
+            echo $dropdownFragebogen->getFragebogenDropdownOptions($conn); 
+            ?> 
+        </select>
+        <button type="submit">Aktiven Fragebogen setzen</button>
+    </form>
 
-<h2>Vorhandene Fragebögen</h2>
-<form action="AdminSicht.php" method="get"> 
+    <h2>Vorhandene Fragebögen</h2>
+    <form action="AdminSicht.php" method="get"> 
     <select name="fragebogen_id">
-        <?php 
-        echo $dropdownFragebogen->getFragebogenDropdownOptions($conn); 
-        ?> 
+        <?php echo $dropdownFragebogen->getFragebogenDropdownOptions($conn); ?> 
     </select>
-    <button type="submit">Bearbeiten</button>
+    <button type="submit" name="bearbeiten">Bearbeiten</button>
     <button type="button" onclick="anzeigenFragebogen()">Anzeigen</button> 
     <button type="button" onclick="weiterleitungBearbeiten()">Weiterleitung bearbeiten</button>
+    <button type="button" onclick="loeschenFragebogen()">Löschen</button>
+
 </form>
 
     <a href="StartseiteMitarbeiter.php">Zurück zur Hauptseite</a>
+
 
     <script>
         function anzeigenFragebogen() {
@@ -104,6 +106,34 @@ $fragebogen = $result->fetch_all(MYSQLI_ASSOC);
             form.querySelector('input[name="fragebogen_id"]').value = selectedFragebogenId;
             return true; // Formular absenden erlauben
         }
+
+        function loeschenFragebogen() {
+    const selectedFragebogenId = document.querySelector('select[name="fragebogen_id"]').value;
+    if (selectedFragebogenId) {
+        if (confirm("Möchten Sie diesen Fragebogen wirklich löschen?")) {
+            // Sende eine Anfrage an den Server, um den Fragebogen zu löschen
+            fetch(`FragebogenLoeschen.php?fragebogen_id=${selectedFragebogenId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Netzwerkantwort war nicht ok');
+                    }
+                    return response.text(); 
+                })
+                .then(data => {
+                    alert(data); 
+                    location.reload(); 
+                })
+                .catch(error => {
+                    console.error('Fehler beim Löschen:', error);
+                    alert("Fehler beim Löschen des Fragebogens. Bitte versuchen Sie es erneut.");
+                });
+        }
+    } else {
+        alert("Bitte wählen Sie einen Fragebogen aus.");
+    }
+}
+
+
     </script>
 </body>
 </html>

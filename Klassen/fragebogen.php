@@ -93,6 +93,53 @@ class fragebogen {
         }
         return $options;
     }
+    public function loeschenFragebogen($conn, $fragebogenId) {
+        // 1. Antwortenkombination_antwort löschen
+        $sqlAntwortenKombinationAntwortLoeschen = "DELETE aka 
+                FROM antwortkombination_antwort aka
+                JOIN antwortkombination ak ON aka.antwortkombination_id = ak.id
+                JOIN antwort a ON aka.antwort_id = a.id
+                JOIN frage f ON a.frage_id = f.id
+                WHERE f.fragebogen_id = ?";
+        $stmtAntwortenKombinationAntwortLoeschen = $conn->prepare($sqlAntwortenKombinationAntwortLoeschen);
+        $stmtAntwortenKombinationAntwortLoeschen->bind_param("i", $fragebogenId);
+        $stmtAntwortenKombinationAntwortLoeschen->execute();
+    
+        // 2. Antwortkombination löschen
+        $sqlAntwortkombinationLoeschen = "DELETE ak 
+                FROM antwortkombination ak
+                JOIN frage f ON ak.frage_id = f.id
+                WHERE f.fragebogen_id = ?";
+        $stmtAntwortkombinationLoeschen = $conn->prepare($sqlAntwortkombinationLoeschen);
+        $stmtAntwortkombinationLoeschen->bind_param("i", $fragebogenId);
+        $stmtAntwortkombinationLoeschen->execute();
+    
+        // 3. Antworten löschen
+        $sqlAntwortenLoeschen = "DELETE a 
+                FROM antwort a
+                JOIN frage f ON a.frage_id = f.id
+                WHERE f.fragebogen_id = ?";
+        $stmtAntwortenLoeschen = $conn->prepare($sqlAntwortenLoeschen);
+        $stmtAntwortenLoeschen->bind_param("i", $fragebogenId);
+        $stmtAntwortenLoeschen->execute();
+    
+        // 4. Fragen löschen
+        $sqlFragenLoeschen = "DELETE FROM frage WHERE fragebogen_id = ?";
+        $stmtFragenLoeschen = $conn->prepare($sqlFragenLoeschen);
+        $stmtFragenLoeschen->bind_param("i", $fragebogenId);
+        $stmtFragenLoeschen->execute();
+    
+        // 5. Fragebogen löschen
+        $sqlFragebogenLoeschen = "DELETE FROM fragebogen WHERE id = ?";
+        $stmtFragebogenLoeschen = $conn->prepare($sqlFragebogenLoeschen);
+        $stmtFragebogenLoeschen->bind_param("i", $fragebogenId);
+        $stmtFragebogenLoeschen->execute();
+    
+        return true; // Gibt true zurück, wenn alle Abfragen erfolgreich waren
+    }
+
+    
+    
 }
 
 
