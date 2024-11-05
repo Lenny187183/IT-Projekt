@@ -75,8 +75,21 @@ $fragebogen = $result->fetch_all(MYSQLI_ASSOC);
     <button type="submit" name="bearbeiten">Bearbeiten</button>
     <button type="button" onclick="anzeigenFragebogen()">Anzeigen</button> 
     <button type="button" onclick="weiterleitungBearbeiten()">Weiterleitung bearbeiten</button>
-    <button type="button" onclick="loeschenFragebogen()">Löschen</button>
+    
 
+  
+</form>
+
+<h2>Fragebogen löschen</h2>
+<form action="FragebogenLoeschen.php" method="post">
+    <select name="fragebogen_id">
+        <option value="">-- Bitte auswählen --</option>
+        <?php 
+        $dropdownFragebogen = new Fragebogen(); 
+        echo $dropdownFragebogen->getFragebogenDropdownOptions($conn); 
+        ?> 
+    </select>
+    <button type="submit">Löschen</button>
 </form>
 
     <a href="StartseiteMitarbeiter.php">Zurück zur Hauptseite</a>
@@ -111,7 +124,7 @@ $fragebogen = $result->fetch_all(MYSQLI_ASSOC);
     const selectedFragebogenId = document.querySelector('select[name="fragebogen_id"]').value;
     if (selectedFragebogenId) {
         if (confirm("Möchten Sie diesen Fragebogen wirklich löschen?")) {
-            // Sende eine Anfrage an den Server, um den Fragebogen zu löschen
+            // AJAX-Anfrage an FragebogenLoeschen.php
             fetch(`FragebogenLoeschen.php?fragebogen_id=${selectedFragebogenId}`)
                 .then(response => {
                     if (!response.ok) {
