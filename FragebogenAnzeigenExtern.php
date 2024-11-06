@@ -151,5 +151,5 @@ if ($result->num_rows == 1) {
 
 $conn->close();
 ?>
-Verwende den Code mit Vorsicht.
+
 
