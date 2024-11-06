@@ -75,7 +75,7 @@ if ($fragebogenId) {
 
         <h2>Vorhandene Fragen</h2>
         <?php if (!empty($fragen)): ?> 
-            <form action="AntwortBearbeitung.php" method="get">
+            <form action="AntwortBearbeitung.php" method="post"> 
                 <select name="frage_id">
                     <?php foreach ($fragen as $frage): ?>
                         <option value="<?= $frage['id'] ?>"><?= $frage['fragetext'] ?></option>
@@ -83,7 +83,25 @@ if ($fragebogenId) {
                 </select>
                 <input type="hidden" name="fragebogen_id" value="<?php echo $fragebogenId; ?>">
                 <button type="submit">Antworten bearbeiten</button>
+                
             </form>
+           
+
+
+
+
+
+            <h2>Fragen Löschen</h2>
+<form action="FrageLoeschen.php" method="post" onsubmit="return confirm('Möchten Sie diese Frage wirklich löschen?');">
+    <select name="frage_id">
+        <?php foreach ($fragen as $frage): ?>
+            <option value="<?= $frage['id'] ?>"><?= $frage['fragetext'] ?></option>
+        <?php endforeach; ?>
+    </select>
+    <button type="submit" name="loeschen_frage">Frage löschen</button> 
+</form> 
+
+
         <?php else: ?>
             <p>Keine Fragen gefunden.</p>
         <?php endif; ?>
