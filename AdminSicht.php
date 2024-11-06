@@ -1,6 +1,7 @@
 
 <?php
 require_once 'Klassen/fragebogen.php'; // Stellen Sie sicher, dass die Klasse eingebunden wird
+require_once 'Klassen/frage.php';
 require_once 'config.php';
 
 
@@ -87,19 +88,17 @@ if ($fragebogenId) {
             </form>
            
 
-
-
-
-
-            <h2>Fragen Löschen</h2>
-<form action="FrageLoeschen.php" method="post" onsubmit="return confirm('Möchten Sie diese Frage wirklich löschen?');">
+            <h2>Frage löschen</h2>
+<form action="FrageLoeschen.php" method="post">
     <select name="frage_id">
-        <?php foreach ($fragen as $frage): ?>
-            <option value="<?= $frage['id'] ?>"><?= $frage['fragetext'] ?></option>
-        <?php endforeach; ?>
+        <option value="">-- Bitte auswählen --</option>
+        <?php 
+        $dropdownFrage = new Frage(); 
+        echo $dropdownFrage->getFrageDropdownOptions($conn); 
+        ?> 
     </select>
-    <button type="submit" name="loeschen_frage">Frage löschen</button> 
-</form> 
+    <button type="submit">Löschen</button>
+</form>
 
 
         <?php else: ?>
