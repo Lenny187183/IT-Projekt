@@ -37,6 +37,33 @@ class frage {
         $this->fragetext = $fragetext;
     }
 
+
+    public function getFragenDropdownOptions($conn, $fragebogenId) {
+        $sql = "SELECT id, fragetext FROM frage WHERE fragebogen_id = ?";
+        $stmt = $conn->prepare($sql);
+    
+        if (!$stmt) {
+            die("Fehler bei der Abfragevorbereitung: " . $conn->error);
+        }
+    
+        $stmt->bind_param("i", $fragebogenId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+    
+        if (!$result) {
+            die("Fehler bei der Abfrage: " . $stmt->error);
+        }
+    
+        $fragen = $result->fetch_all(MYSQLI_ASSOC);
+    
+        $options = '';
+        foreach ($fragen as $frage) {
+            $options .= "<option value='{$frage['id']}'>{$frage['fragetext']}</option>";
+        }
+    
+        return $options;
+    }
+
     // Methoden zum Laden und Speichern in der Datenbank
     public function ladenAusDatenbank($conn, $id) {
         $sql = "SELECT * FROM frage WHERE id = ?";
