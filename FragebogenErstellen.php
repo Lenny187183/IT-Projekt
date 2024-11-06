@@ -70,6 +70,7 @@ $fragebogen = $result->fetch_all(MYSQLI_ASSOC);
     <h2>Vorhandene Fragebögen</h2>
     <form action="AdminSicht.php" method="get"> 
     <select name="fragebogen_id">
+    <option value="">-- Bitte auswählen --</option>
         <?php echo $dropdownFragebogen->getFragebogenDropdownOptions($conn); ?> 
     </select>
     <button type="submit" name="bearbeiten">Bearbeiten</button>
