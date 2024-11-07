@@ -47,7 +47,7 @@ $fragebogen = $result->fetch_all(MYSQLI_ASSOC);
 <link rel="stylesheet" href="FragebogenErstellen.css">
 
 <body>
-    <h1>Fragebogen erstellen oder auswählen</h1>
+<h1>Fragebogenverwaltung</h1>
 
     <h2>Neuen Fragebogen erstellen</h2>
     <form method="post">
@@ -55,7 +55,7 @@ $fragebogen = $result->fetch_all(MYSQLI_ASSOC);
         <button type="submit" name="neuer_fragebogen">Erstellen</button>
     </form>
 
-    <h2>Aktiven Fragebogen auswählen</h2>
+    <h2>Aktiven Fragebogen setzen</h2>
     <form method="post" action="aktivenFragebogenSetzen.php"> 
         <select name="aktiver_fragebogen_id">
             <option value="">-- Bitte auswählen --</option> 

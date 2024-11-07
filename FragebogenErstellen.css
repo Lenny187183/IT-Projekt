@@ -15,6 +15,7 @@ h1, h2 {
     margin-left: 20px; /* Linker Abstand für Überschriften */
 }
 
+
 h1 {
     font-size: 2em;
     text-align: center;
@@ -75,3 +76,4 @@ a {
 a:hover {
     text-decoration: underline;
 }
+
