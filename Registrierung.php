@@ -71,7 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <button type="submit">Registrieren</button> 
     </form>
 
-    <a href="Login.html">Zurück 
+    <a href="login.html">Zurück 
  zum Login</a> 
 </body>
 </html>
