@@ -103,9 +103,7 @@ if ($result->num_rows == 1) {
                                     <label>
                                         <input type="radio" name="antworten[<?php echo $frage['id']; ?>]" value="<?php echo $antwort['id']; ?>"  onchange="zeigeNaechsteFrage(<?php echo $frage['id']; ?>, <?php echo $antwort['id']; ?>)"> 
                                         <?php echo $antwort['antworttext']; ?>
-                                        <?php if (isset($antwortkombinationenMap[$antwort['id']])): ?>
-                                            <span class="weiterleitungs-urls">(Weiterleitungen: <?php echo implode(', ', $antwortkombinationenMap[$antwort['id']]); ?>)</span>
-                                        <?php endif; ?>
+                                        
                                     </label><br>
                                 <?php endforeach; ?>
                             </div>

@@ -65,8 +65,8 @@ if ($fragebogenId) {
             <form action="NewFrageEingabe.php" method="post">
                 <div class="form-group">
                     <label for="fragetext">Fragetext:</label>
-                    <input type="text" id="fragetext" name="fragetext" required>
-                </div>
+                    <textarea id="fragetext" name="fragetext" rows="5" cols="40" required></textarea> 
+                    </div>
 
                 <input type="hidden" id="fragebogen_id" name="fragebogen_id" value="<?php echo $fragebogenId; ?>">
 

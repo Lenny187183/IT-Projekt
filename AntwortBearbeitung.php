@@ -72,7 +72,7 @@ $antworten = $antwort->ladenAntwortenFuerFrage($conn, $frageId);
 
             <div class="form-group">
                 <label for="antworttext">Antworttext:</label>
-                <input type="text" id="antworttext" name="antworttext" required>
+                <textarea id="antworttext" name="antworttext" rows="5" cols="40" required></textarea>
             </div>
 
             <button type="submit" name="neue_antwort">Antwort hinzufügen</button>

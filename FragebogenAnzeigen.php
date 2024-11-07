@@ -92,22 +92,24 @@ foreach ($antwortkombinationen as $kombination) {
 </head>
 <body>
     <div class="container">
-        <h1><?php echo $fragebogenTitel; ?></h1>
+        <h1 style='white-space: pre-wrap;'><?php echo $fragebogenTitel; ?></h1>
 
         <form method="post" action="FragebogenVerarbeiten.php">
             <?php foreach ($fragen as $frage): ?>
                 <div class="frage">
-                    <h3><?php echo $frage['fragetext']; ?></h3>
+                    <h3 style='white-space: pre-wrap;'><?php echo $frage['fragetext']; ?></h3>
                     <?php
                     // Antworten zur Frage laden
                     $antwort = new Antwort();
                     $antworten = $antwort->ladenAntwortenFuerFrage($conn, $frage['id']);
                     ?>
-                    <div class="antworten">
+                    <div  class="antworten">
                         <?php foreach ($antworten as $antwort): ?>
-                            <label>
-                                <input type="radio" name="antworten[<?php echo $frage['id']; ?>]" value="<?php echo $antwort['id']; ?>">
-                                <?php echo $antwort['antworttext']; ?>
+                            <label >
+                                <input  type="radio" name="antworten[<?php echo $frage['id']; ?>]" value="<?php echo $antwort['id']; ?>">
+                               <?php echo $antwort['antworttext']; ?>
+                                
+                                
                                 <?php if (isset($antwortkombinationenMap[$antwort['id']])): ?>
                                     <span class="weiterleitungs-urls">(Weiterleitungen: <?php echo implode(', ', $antwortkombinationenMap[$antwort['id']]); ?>)</span>
                                 <?php endif; ?>

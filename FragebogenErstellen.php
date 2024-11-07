@@ -31,8 +31,8 @@ if ($conn->connect_error) {
         $stmtAktivSetzen->execute();
 
         // Weiterleitung zur Startseite mit der fragebogen_id in der Session
-        header("Location: Startseite.php"); 
-        exit();
+        //header("Location: Startseite.php"); 
+        
     }
 }
 
@@ -49,11 +49,11 @@ $fragebogen = $result->fetch_all(MYSQLI_ASSOC);
 <body>
 <h1>Fragebogenverwaltung</h1>
 
-    <h2>Neuen Fragebogen erstellen</h2>
-    <form method="post">
-        <input type="text" name="titel" placeholder="Titel" required>
-        <button type="submit" name="neuer_fragebogen">Erstellen</button>
-    </form>
+<h2>Neuen Fragebogen erstellen</h2>
+<form method="post">
+    <textarea name="titel" placeholder="Titel" rows="5" cols="40" required></textarea> 
+    <button type="submit" name="neuer_fragebogen">Erstellen</button>
+</form>
 
     <h2>Aktiven Fragebogen setzen</h2>
     <form method="post" action="aktivenFragebogenSetzen.php"> 
