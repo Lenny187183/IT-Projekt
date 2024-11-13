@@ -76,7 +76,7 @@ $fragebogen = $result->fetch_all(MYSQLI_ASSOC);
     <button type="submit" name="bearbeiten">Bearbeiten</button>
     <button type="button" onclick="anzeigenFragebogen()">Anzeigen</button> 
     <button type="button" onclick="weiterleitungBearbeiten()">Weiterleitung bearbeiten</button>
-    
+    <button type="button" onclick="beziehungenBearbeiten()">Beziehungen bearbeiten</button>
 
   
 </form>
@@ -110,6 +110,15 @@ $fragebogen = $result->fetch_all(MYSQLI_ASSOC);
             const selectedFragebogenId = document.querySelector('select[name="fragebogen_id"]').value;
             if (selectedFragebogenId) {
                 window.location.href = `WeiterleitungKonfigurieren.php?fragebogen_id=${selectedFragebogenId}`;
+            } else {
+                alert("Bitte wählen Sie einen Fragebogen aus.");
+            }
+        }
+
+        function beziehungenBearbeiten() {
+            const selectedFragebogenId = document.querySelector('select[name="fragebogen_id"]').value;
+            if (selectedFragebogenId) {
+                window.location.href = `BeziehungBearbeiten.php?fragebogen_id=${selectedFragebogenId}`;
             } else {
                 alert("Bitte wählen Sie einen Fragebogen aus.");
             }
