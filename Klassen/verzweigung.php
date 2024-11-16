@@ -69,16 +69,21 @@ class verzweigung {
     public function speichernInDatenbank($conn) {
         if ($this->id) {
             // Update
+            if ($this->folgefrageId === "") { 
+                $this->folgefrageId = null;
+            }
             $sql = "UPDATE verzweigung SET antwort_id = ?, folgefrage_id = ?, parent_frage_id = ? WHERE id = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param("iiii", $this->antwortId, $this->folgefrageId, $this->parentFrageId, $this->id);
         } else {
             // Insert
+            if ($this->folgefrageId === "") {
+                $this->folgefrageId = null;
+            }
             $sql = "INSERT INTO verzweigung (antwort_id, folgefrage_id, parent_frage_id) VALUES (?, ?, ?)";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param("iii", $this->antwortId, $this->folgefrageId, $this->parentFrageId);
         }
-
         if ($stmt->execute()) {
             if (!$this->id) {
                 $this->id = $conn->insert_id;
@@ -88,6 +93,45 @@ class verzweigung {
             return false; // Fehler beim Speichern
         }
     }
+
+    public function ladenAusDatenbankMitAntwortId($conn, $antwortId) {
+        $sql = "SELECT * FROM verzweigung WHERE antwort_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $antwortId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows == 1) {
+            $row = $result->fetch_assoc();
+            $this->id = $row['id'];
+            $this->antwortId = $row['antwort_id'];
+            $this->folgefrageId = $row['folgefrage_id'];
+            $this->parentFrageId = $row['parent_frage_id'];
+            return true; // Verzweigung gefunden
+        } else {
+            return false; // Verzweigung nicht gefunden
+        }
+    
+    }
+
+
+    public function setParentFrageIdAusAntwortId($conn, $antwortId) {
+        $sql = "SELECT frage_id FROM antwort WHERE id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $antwortId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows == 1) {
+            $row = $result->fetch_assoc();
+            $this->parentFrageId = $row['frage_id'];
+        } else {
+            $this->parentFrageId = null; // Oder eine andere Fehlerbehandlung
+        }
+    }
+
+
+    
 }
 
 ?>

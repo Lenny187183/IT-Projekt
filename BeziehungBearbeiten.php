@@ -13,11 +13,8 @@ if ($conn->connect_error) {
     die('Verbindung fehlgeschlagen: ' . $conn->connect_error);
 }
 
-// Fragebogen-ID aus der URL oder dem Formular holen
+// Fragebogen-ID aus der URL holen
 $fragebogenId = isset($_GET['fragebogen_id']) ? $_GET['fragebogen_id'] : null;
-
-// Frage-ID aus der URL oder dem Formular holen
-$frageId = isset($_GET['frage_id']) ? $_GET['frage_id'] : (isset($_POST['frage_id']) ? $_POST['frage_id'] : null);
 
 $fragebogenTitel = "";
 $fragetext = "";
@@ -36,44 +33,69 @@ if ($fragebogenId) {
         $frage = new Frage();
         $fragen = $frage->ladenFragenFuerFragebogen($conn, $fragebogenId);
 
+        // Formular zum Speichern der Beziehungen
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            foreach ($_POST['folgefrage'] as $antwortId => $folgefrageId) {
+                $verzweigung = new Verzweigung();
+
+                // Wenn die Verzweigung bereits existiert, lade sie aus der Datenbank
+                if (!$verzweigung->ladenAusDatenbankMitAntwortId($conn, $antwortId)) {
+                    // Ansonsten erstelle eine neue Verzweigung
+                    $verzweigung->setAntwortId($antwortId);
+                }
+
+                $verzweigung->setFolgefrageId($folgefrageId);
+                $verzweigung->setParentFrageIdAusAntwortId($conn, $antwortId); 
+
+                if ($verzweigung->speichernInDatenbank($conn)) {
+                    echo "Beziehungen erfolgreich gespeichert.";
+                } else {
+                    echo "Fehler beim Speichern der Beziehungen.";
+                }
+            }
+        }
+
         ?>
 
         <!DOCTYPE html>
         <html>
         <head>
             <title>Beziehungen bearbeiten</title>
-            <link rel="stylesheet" href="schön.css"> </head>
+            <link rel="stylesheet" href="schön.css"> 
+        </head>
         <body>
-            <div class="container"> 
-                <h1>Beziehungen für Fragebogen "<?php echo $fragebogenTitel; ?>" bearbeiten</h1>
+            <div class="container">
+                <form action="" method="post"> 
+                    <h1>Beziehungen für Fragebogen "<?php echo $fragebogenTitel; ?>" bearbeiten</h1>
 
-                <?php foreach ($fragen as $frage): ?>
-                    <div class="frage">
-                        <h3><?php echo $frage['fragetext']; ?></h3>
+                    <?php foreach ($fragen as $frage): ?>
+                        <div class="frage">
+                            <h3><?php echo $frage['fragetext']; ?></h3>
 
-                        <?php
-                        // Antworten zur Frage laden
-                        $antwort = new Antwort();
-                        $antworten = $antwort->ladenAntwortenFuerFrage($conn, $frage['id']);
-                        ?>
-                        <div class="antworten">
-                            <?php foreach ($antworten as $antwort): ?>
-                                <div class="antwort">
-                                    <span><?php echo $antwort['antworttext']; ?></span>
-                                    <label for="parent_frage_<?php echo $antwort['id']; ?>">Parent-Frage:</label>
-                                    <select id="parent_frage_<?php echo $antwort['id']; ?>" name="parent_frage[<?php echo $antwort['id']; ?>]">
-                                        <option value="">Keine Parent-Frage</option>
-                                        <?php foreach ($fragen as $parentFrage): ?>
-                                            <option value="<?php echo $parentFrage['id']; ?>"><?php echo $parentFrage['fragetext']; ?></option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </div>
-                            <?php endforeach; ?>
+                            <?php
+                            // Antworten zur Frage laden
+                            $antwort = new Antwort();
+                            $antworten = $antwort->ladenAntwortenFuerFrage($conn, $frage['id']);
+                            ?>
+                            <div class="antworten">
+                                <?php foreach ($antworten as $antwort): ?>
+                                    <div class="antwort">
+                                        <span><?php echo $antwort['antworttext']; ?></span>
+                                        <label for="folgefrage_<?php echo $antwort['id']; ?>">Folgefrage:</label>
+                                        <select id="folgefrage_<?php echo $antwort['id']; ?>" name="folgefrage[<?php echo $antwort['id']; ?>]">
+                                            <option value="">Keine Folgefrage</option>
+                                            <?php foreach ($fragen as $folgefrage): ?>
+                                                <option value="<?php echo $folgefrage['id']; ?>"><?php echo $folgefrage['fragetext']; ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
                         </div>
-                    </div>
-                <?php endforeach; ?>
+                    <?php endforeach; ?>
 
-                <button type="submit">Speichern</button>
+                    <button type="submit">Speichern</button>
+                </form> 
             </div>
         </body>
         </html>

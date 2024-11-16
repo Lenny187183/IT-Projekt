@@ -73,10 +73,10 @@ $fragebogen = $result->fetch_all(MYSQLI_ASSOC);
     <option value="">-- Bitte auswählen --</option>
         <?php echo $dropdownFragebogen->getFragebogenDropdownOptions($conn); ?> 
     </select>
-    <button type="submit" name="bearbeiten">Bearbeiten</button>
-    <button type="button" onclick="anzeigenFragebogen()">Anzeigen</button> 
+    <button type="submit" name="bearbeiten">Bearbeiten</button> 
     <button type="button" onclick="weiterleitungBearbeiten()">Weiterleitung bearbeiten</button>
     <button type="button" onclick="beziehungenBearbeiten()">Beziehungen bearbeiten</button>
+    <button type="button" onclick="anzeigenFragebogen()">Anzeigen</button>
 
   
 </form>
@@ -98,13 +98,13 @@ $fragebogen = $result->fetch_all(MYSQLI_ASSOC);
 
     <script>
         function anzeigenFragebogen() {
-            const selectedFragebogenId = document.querySelector('select[name="fragebogen_id"]').value;
-            if (selectedFragebogenId) {
-                window.location.href = `FragebogenAnzeigen.php?fragebogen_id=${selectedFragebogenId}`; 
-            } else {
-                alert("Bitte wählen Sie einen Fragebogen aus.");
-            }
-        }
+    const selectedFragebogenId = document.querySelector('select[name="fragebogen_id"]').value;
+    if (selectedFragebogenId) {
+        window.location.href = `FragebogenAnzeigen.php?fragebogen_id=${selectedFragebogenId}`; // Korrigierter Link
+    } else {
+        alert("Bitte wählen Sie einen Fragebogen aus.");
+    }
+}
 
         function weiterleitungBearbeiten() {
             const selectedFragebogenId = document.querySelector('select[name="fragebogen_id"]').value;
