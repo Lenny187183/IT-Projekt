@@ -99,7 +99,7 @@ class verzweigung {
         $stmt->bind_param("i", $antwortId);
         $stmt->execute();
         $result = $stmt->get_result();
-
+    
         if ($result->num_rows == 1) {
             $row = $result->fetch_assoc();
             $this->id = $row['id'];

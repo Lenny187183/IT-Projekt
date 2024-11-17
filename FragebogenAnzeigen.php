@@ -83,10 +83,10 @@ foreach ($antwortkombinationen as $kombination) {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         .frage {
-             /*display: none; /* Alle Fragen initial verstecken */
+            display: none; /* Alle Fragen initial verstecken */
         }
         #frage_1 { /* Die erste Frage anzeigen */
-            /* display: block;*/
+            display: block;
         }
     </style>
     <script>
@@ -111,6 +111,10 @@ foreach ($antwortkombinationen as $kombination) {
                         alert('Ende des Fragebogens erreicht!');
                         // Oder leite den Benutzer zu einer anderen Seite weiter
                     }
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX-Fehler:", status, error);
+                    // Zusätzliche Fehlerbehandlung, falls nötig
                 }
             });
         }
@@ -149,7 +153,7 @@ foreach ($antwortkombinationen as $kombination) {
                                 <?php echo $antwort['antworttext']; ?>
 
                                 <?php if (isset($antwortkombinationenMap[$antwort['id']])): ?>
-                                    <span class="weiterleitungs-urls"Weiterleitungen: <?php echo implode(', ', $antwortkombinationenMap[$antwort['id']]); ?>)</span>
+                                    <span class="weiterleitungs-urls">(Weiterleitungen: <?php echo implode(', ', $antwortkombinationenMap[$antwort['id']]); ?>)</span>
                                 <?php endif; ?>
                             </label><br>
                         <?php endforeach; ?>
