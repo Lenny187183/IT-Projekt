@@ -30,6 +30,7 @@ if ($fragebogenId) {
         // Fragen für den Fragebogen laden
         $frage = new Frage();
         $fragen = $frage->ladenFragenFuerFragebogen($conn, $fragebogenId);
+        var_dump($fragen);
     } else {
         $fragebogenTitel = "Fragebogen nicht gefunden";
         $fragen = [];
@@ -83,7 +84,7 @@ foreach ($antwortkombinationen as $kombination) {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         .frage {
-            display: none; /* Alle Fragen initial verstecken */
+            /* display: none; /* Alle Fragen initial verstecken */
         }
         #frage_1 { /* Die erste Frage anzeigen */
             display: block;
