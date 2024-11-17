@@ -49,13 +49,12 @@ class verzweigung {
     public function ladenAusDatenbank($conn, $id) {
         $sql = "SELECT * FROM verzweigung WHERE id = ?";
         $stmt = $conn->prepare($sql);
-		$stmt->bind_param("iiii", $this->antwortId, $this->folgefrageId, $this->parentFrageId, $this->id); 
+        $stmt->bind_param("i", $id); // Nur die ID binden
         $stmt->execute();
         $result = $stmt->get_result();
-
+    
         if ($result->num_rows == 1) {
-            $row = $result->fetch_assoc();  
-
+            $row = $result->fetch_assoc();
             $this->id = $row['id'];
             $this->antwortId = $row['antwort_id'];
             $this->folgefrageId = $row['folgefrage_id'];
