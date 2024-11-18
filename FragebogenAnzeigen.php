@@ -30,7 +30,7 @@ if ($fragebogenId) {
         // Fragen für den Fragebogen laden
         $frage = new Frage();
         $fragen = $frage->ladenFragenFuerFragebogen($conn, $fragebogenId);
-        var_dump($fragen);
+        var_dump($fragen);        
     } else {
         $fragebogenTitel = "Fragebogen nicht gefunden";
         $fragen = [];
@@ -84,41 +84,42 @@ foreach ($antwortkombinationen as $kombination) {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         .frage {
-            /* display: none; /* Alle Fragen initial verstecken */
+            display: none; /* Alle Fragen initial verstecken */
         }
         #frage_1 { /* Die erste Frage anzeigen */
             display: block;
         }
     </style>
     <script>
-        function zeigeNaechsteFrage(antwortId) {
-            // Aktuelle Frage verstecken
-            $('.frage:visible').hide();
+       var aktuelleFrageId = 1; // Starte mit der ersten Frage
 
-            // AJAX-Request an den Server, um die Folgefrage zu ermitteln
-            $.ajax({
-                url: 'ajax.php',
-                type: 'POST',
-                data: { antwortId: antwortId },
-                success: function(response) {
-                    // ID der nächsten Frage aus der Antwort extrahieren
-                    var naechsteFrageId = response.folgefrage_id;
+function zeigeNaechsteFrage(antwortId) {
+    // Aktuelle Frage verstecken
+    $('#frage_' + aktuelleFrageId).hide();
 
-                    // Nächste Frage anzeigen (falls vorhanden)
-                    if (naechsteFrageId) {
-                        $('#frage_' + naechsteFrageId).show();
-                    } else {
-                        // Wenn keine nächste Frage existiert (Ende des Fragebogens)
-                        alert('Ende des Fragebogens erreicht!');
-                        // Oder leite den Benutzer zu einer anderen Seite weiter
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.error("AJAX-Fehler:", status, error);
-                    // Zusätzliche Fehlerbehandlung, falls nötig
-                }
-            });
+    // AJAX-Request an den Server
+    $.ajax({
+        url: 'ajax.php',
+        type: 'POST',
+        data: { antwortId: antwortId },
+        dataType: 'json',
+        success: function(response) {
+            var naechsteFrageId = response.folgefrage_id;
+
+            if (naechsteFrageId) {
+                // Nächste Frage einblenden
+                $('#frage_' + naechsteFrageId).show();
+                aktuelleFrageId = naechsteFrageId;
+            } else {
+                alert('Ende des Fragebogens erreicht oder keine Folgefrage definiert.');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error("Fehler beim Laden der Folgefrage:", error);
         }
+    });
+}
+
 
         function resetRadioButtons() {
             // Alle Radio-Buttons im Formular abrufen
@@ -130,42 +131,38 @@ foreach ($antwortkombinationen as $kombination) {
             // Setze den Fragebogen zurück zur ersten Frage
             $('.frage').hide();
             $('#frage_1').show();
+            aktuelleFrageId = 1; // Zurücksetzen der aktuellenFrageId
         }
     </script>
 </head>
 <body>
-    <div class="container">
-        <h1 style='white-space: pre-wrap;'><?php echo $fragebogenTitel; ?></h1>
+<div class="container">
+    <h1 style='white-space: pre-wrap;'><?php echo $fragebogenTitel; ?></h1>
 
-        <form method="post" action="FragebogenVerarbeiten.php">
-            <?php foreach ($fragen as $frage): ?>
-                <div class="frage" id="frage_<?php echo $frage['id']; ?>">
-                    <h3 style='white-space: pre-wrap;'><?php echo $frage['fragetext']; ?></h3>
+    <form method="post" action="FragebogenVerarbeiten.php">
+        <?php foreach ($fragen as $frage): ?>
+            <div class="frage" id="frage_<?php echo $frage['id']; ?>" style="display: none;">
+                <h3 style='white-space: pre-wrap;'><?php echo $frage['fragetext']; ?></h3>
 
-                    <?php
-                    // Antworten zur Frage laden
-                    $antwort = new Antwort();
-                    $antworten = $antwort->ladenAntwortenFuerFrage($conn, $frage['id']);
-                    ?>
-                    <div class="antworten">
-                        <?php foreach ($antworten as $antwort): ?>
-                            <label>
-                                <input type="radio" name="antworten[<?php echo $frage['id']; ?>]" value="<?php echo $antwort['id']; ?>" onchange="zeigeNaechsteFrage(<?php echo $antwort['id']; ?>)">
-                                <?php echo $antwort['antworttext']; ?>
-
-                                <?php if (isset($antwortkombinationenMap[$antwort['id']])): ?>
-                                    <span class="weiterleitungs-urls">(Weiterleitungen: <?php echo implode(', ', $antwortkombinationenMap[$antwort['id']]); ?>)</span>
-                                <?php endif; ?>
-                            </label><br>
-                        <?php endforeach; ?>
-                    </div>
+                <?php
+                $antwort = new Antwort();
+                $antworten = $antwort->ladenAntwortenFuerFrage($conn, $frage['id']);
+                ?>
+                <div class="antworten">
+                    <?php foreach ($antworten as $antwort): ?>
+                        <label>
+                            <input type="radio" name="antworten[<?php echo $frage['id']; ?>]" value="<?php echo $antwort['id']; ?>" onchange="zeigeNaechsteFrage(<?php echo $antwort['id']; ?>)">
+                            <?php echo $antwort['antworttext']; ?>
+                        </label><br>
+                    <?php endforeach; ?>
                 </div>
-            <?php endforeach; ?>
-
-            <button type="submit">Weiterleiten</button>
-            <button type="button" onclick="resetRadioButtons()">Zurücksetzen</button>
-            <a href="FragebogenErstellen.php" class="btn">Zurück zur Auswahl</a>
-        </form>
-    </div>
+            </div>
+        <?php endforeach; ?>
+        
+        <button type="submit">Weiterleiten</button>
+        <button type="button" onclick="resetRadioButtons()">Zurücksetzen</button>
+        <a href="FragebogenErstellen.php" class="btn">Zurück zur Auswahl</a>
+    </form>
+</div>
 </body>
 </html>
