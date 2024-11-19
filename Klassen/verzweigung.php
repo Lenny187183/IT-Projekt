@@ -83,6 +83,7 @@ class verzweigung {
             $stmt = $conn->prepare($sql);
             $stmt->bind_param("iii", $this->antwortId, $this->folgefrageId, $this->parentFrageId);
         }
+    
         if ($stmt->execute()) {
             if (!$this->id) {
                 $this->id = $conn->insert_id;
@@ -102,7 +103,7 @@ class verzweigung {
     
         if ($result->num_rows == 1) {
             $row = $result->fetch_assoc();
-            $this->id = $row['id'];
+            $this->id = $row['id']; // ID aus der Datenbank laden
             $this->antwortId = $row['antwort_id'];
             $this->folgefrageId = $row['folgefrage_id'];
             $this->parentFrageId = $row['parent_frage_id'];
@@ -110,7 +111,6 @@ class verzweigung {
         } else {
             return false; // Verzweigung nicht gefunden
         }
-    
     }
 
 

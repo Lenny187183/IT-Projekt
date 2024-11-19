@@ -84,11 +84,11 @@ foreach ($antwortkombinationen as $kombination) {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
     <style>
         .frage {
-            display: none; /* Alle Fragen initial verstecken */
-        }
-        #frage_<?php echo $fragen[0]['id']; ?> { /* Die erste Frage anzeigen */ 
-            display: block;
-        }
+    display: none; /* Alle Fragen initial verstecken */
+}
+#frage_<?php echo $fragen[0]['id']; ?> { /* Die erste Frage anzeigen */ 
+    display: block;
+}
     </style>
     <script>
         var aktuelleFrageId = <?php echo $fragen[0]['id']; ?>; // ID der ersten Frage
@@ -96,6 +96,7 @@ foreach ($antwortkombinationen as $kombination) {
         function zeigeNaechsteFrage(antwortId) {
             // Aktuelle Frage verstecken
             $('#frage_' + aktuelleFrageId).hide();
+            console.log(antwortId);
 
             // AJAX-Request an den Server, um die Folgefrage zu ermitteln
             $.ajax({
@@ -103,9 +104,11 @@ foreach ($antwortkombinationen as $kombination) {
                 type: 'POST',
                 data: { antwortId: antwortId },
                 success: function(response) {
+                    
                     // ID der nächsten Frage aus der Antwort extrahieren
                     var naechsteFrageId = response.folgefrage_id;
-                    console.log("Antwort von ajax.php:", response); // Debugging-Ausgabe
+                    console.log("Antwort von ajax.php:", response);
+                    console.log("Naechste Frage ID:", naechsteFrageId); // Debugging-Ausgabe
 
                     // Nächste Frage anzeigen (falls vorhanden)
                     if (naechsteFrageId) {
