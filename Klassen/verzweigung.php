@@ -115,7 +115,7 @@ class verzweigung {
 
 
     public function setParentFrageIdAusAntwortId($conn, $antwortId) {
-        $sql = "SELECT frage_id FROM antwort WHERE id = ?";
+        $sql = "SELECT id, frage_id FROM antwort WHERE id = ?"; 
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("i", $antwortId);
         $stmt->execute();
@@ -123,6 +123,7 @@ class verzweigung {
 
         if ($result->num_rows == 1) {
             $row = $result->fetch_assoc();
+            var_dump($row);
             $this->parentFrageId = $row['frage_id'];
         } else {
             $this->parentFrageId = null; // Oder eine andere Fehlerbehandlung

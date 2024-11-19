@@ -9,19 +9,15 @@ if ($conn->connect_error) {
 
 if (isset($_POST['antwortId'])) {
     $antwortId = intval($_POST['antwortId']);
-    
-    // Abfrage nach der Folgefrage anhand der Antwort-ID
-    $stmt = $conn->prepare("SELECT folgefrage_id FROM verzweigung WHERE antwort_id = ?");
-    $stmt->bind_param("i", $antwortId);
-    $stmt->execute();
-    $stmt->bind_result($folgefrageId);
-    $stmt->fetch();
 
-    echo json_encode(['folgefrage_id' => $folgefrageId ? $folgefrageId : null]);
-    
-    $stmt->close();
-} else {
-    echo json_encode(['error' => 'Keine Antwort-ID übermittelt']);
+    $verzweigung = new Verzweigung();
+    if ($verzweigung->ladenAusDatenbankMitAntwortId($conn, $antwortId)) {
+        $folgefrageId = $verzweigung->getFolgefrageId();
+    } else {
+        $folgefrageId = null; // Oder eine andere Fehlerbehandlung
+    }
+
+    echo json_encode(['folgefrage_id' => $folgefrageId]);
 }
 
 $conn->close();
