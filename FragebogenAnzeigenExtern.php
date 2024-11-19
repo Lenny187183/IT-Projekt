@@ -84,46 +84,12 @@ foreach ($antwortkombinationen as $kombination) {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
     <style>
         .frage {
-    display: none; /* Alle Fragen initial verstecken */
-}
-#frage_<?php echo $fragen[0]['id']; ?> { /* Die erste Frage anzeigen */ 
-    display: block;
-}
-    </style>
-    <script>
-        var aktuelleFrageId = <?php echo $fragen[0]['id']; ?>; // ID der ersten Frage
-
-        function zeigeNaechsteFrage(antwortId) {
-            // Aktuelle Frage verstecken
-            $('#frage_' + aktuelleFrageId).hide();
-            console.log(antwortId);
-
-            // AJAX-Request an den Server, um die Folgefrage zu ermitteln
-            $.ajax({
-                url: 'ajax.php',
-                type: 'POST',
-                data: { antwortId: antwortId },
-                success: function(response) {
-                    
-                    // ID der nächsten Frage aus der Antwort extrahieren
-                    var naechsteFrageId = response.folgefrage_id;
-                    console.log("Antwort von ajax.php:", response);
-                    console.log("Naechste Frage ID:", naechsteFrageId); // Debugging-Ausgabe
-
-                    // Nächste Frage anzeigen (falls vorhanden)
-                    if (naechsteFrageId) {
-                        $('#frage_' + naechsteFrageId).show();
-                        aktuelleFrageId = naechsteFrageId; 
-                    } else {
-                        alert('Ende des Fragebogens erreicht!');
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.error("AJAX-Fehler:", status, error);
-                }
-            });
+            display: none; /* Alle Fragen initial verstecken */
         }
-    </script>
+        #frage_<?php echo $fragen[0]['id']; ?> { /* Die erste Frage anzeigen */ 
+            display: block;
+        }
+    </style>
 </head>
 <body>
     <div class="container"> 
@@ -142,7 +108,7 @@ foreach ($antwortkombinationen as $kombination) {
                     <div class="antworten">
                         <?php foreach ($antworten as $antwort): ?>
                             <label>
-                                <input type="radio" name="antworten[<?php echo $frage['id']; ?>]" value="<?php echo $antwort['id']; ?>" onchange="zeigeNaechsteFrage(<?php echo $antwort['id']; ?>)"> 
+                                <input type="radio" name="antworten[<?php echo $frage['id']; ?>]" value="<?php echo $antwort['id']; ?>" onchange="zeigeNaechsteFrage(this)"> 
                                 <?php echo $antwort['antworttext']; ?>
                             </label><br> 
                         <?php endforeach; ?>
@@ -153,6 +119,48 @@ foreach ($antwortkombinationen as $kombination) {
             <button type="submit">Weiterleiten</button> 
         </form> 
     </div>
+
+    <script>
+    function zeigeNaechsteFrage(radio) {
+        // ID der aktuellen Frage ermitteln
+        var aktuelleFrageId = $(radio).closest('.frage').attr('id');
+
+        // ID der nächsten Frage ermitteln
+        Okay, wenn die Meldung "Fragebogen zu Ende" erscheint, obwohl noch weitere Fragen vorhanden sein sollten, liegt das Problem wahrscheinlich in der Auswertung der Verzweigungslogik innerhalb des JavaScript-Codes.
+
+Hier ist der relevante Teil deines Codes:
+
+JavaScript
+function zeigeNaechsteFrage(radio) {
+    // ...
+
+    // ID der nächsten Frage ermitteln
+    var naechsteFrageId = null;
+    var antwortId = $(radio).val();
+    <?php foreach ($fragen as $frage): ?>
+        <?php foreach ($antworten as $antwort): ?>
+            <?php
+            $verzweigung = new Verzweigung();
+            if ($verzweigung->ladenAusDatenbankMitAntwortId($conn, $antwort['id'])) {
+                $folgefrageId = $verzweigung->getFolgefrageId();
+                if ($folgefrageId) {
+                    echo "if (antwortId == " . $antwort['id'] . " && aktuelleFrageId == 'frage_" . $frage['id'] . "') { naechsteFrageId = " . $folgefrageId . "; }";
+                }
+            }
+            ?>
+        <?php endforeach; ?>
+    <?php endforeach; ?>
+
+        // Aktuelle Frage verstecken
+        $('#' + aktuelleFrageId).hide();
+
+        // Nächste Frage anzeigen (falls vorhanden)
+        if (naechsteFrageId) {
+            $('#frage_' + naechsteFrageId).show();
+        } else {
+            alert('Ende des Fragebogens erreicht!');
+        }
+    }
+    </script>
 </body>
 </html>
-
