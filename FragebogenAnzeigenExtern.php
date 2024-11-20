@@ -124,32 +124,31 @@ foreach ($antwortkombinationen as $kombination) {
     function zeigeNaechsteFrage(radio) {
         // ID der aktuellen Frage ermitteln
         var aktuelleFrageId = $(radio).closest('.frage').attr('id');
+        console.log("Aktuelle Frage ID:", aktuelleFrageId); // Debugging
 
         // ID der nächsten Frage ermitteln
-        Okay, wenn die Meldung "Fragebogen zu Ende" erscheint, obwohl noch weitere Fragen vorhanden sein sollten, liegt das Problem wahrscheinlich in der Auswertung der Verzweigungslogik innerhalb des JavaScript-Codes.
-
-Hier ist der relevante Teil deines Codes:
-
-JavaScript
-function zeigeNaechsteFrage(radio) {
-    // ...
-
-    // ID der nächsten Frage ermitteln
-    var naechsteFrageId = null;
-    var antwortId = $(radio).val();
-    <?php foreach ($fragen as $frage): ?>
-        <?php foreach ($antworten as $antwort): ?>
-            <?php
-            $verzweigung = new Verzweigung();
-            if ($verzweigung->ladenAusDatenbankMitAntwortId($conn, $antwort['id'])) {
-                $folgefrageId = $verzweigung->getFolgefrageId();
-                if ($folgefrageId) {
-                    echo "if (antwortId == " . $antwort['id'] . " && aktuelleFrageId == 'frage_" . $frage['id'] . "') { naechsteFrageId = " . $folgefrageId . "; }";
-                }
-            }
+        var naechsteFrageId = null;
+        var antwortId = $(radio).val();
+        <?php foreach ($fragen as $frage): ?>
+            <?php 
+            // Antworten zur Frage laden (innerhalb der Schleife)
+            $antwort = new Antwort();
+            $antworten = $antwort->ladenAntwortenFuerFrage($conn, $frage['id']);
             ?>
+            <?php foreach ($antworten as $antwort): ?>
+                <?php
+                $verzweigung = new Verzweigung();
+                if ($verzweigung->ladenAusDatenbankMitAntwortId($conn, $antwort['id'])) {
+                    $folgefrageId = $verzweigung->getFolgefrageId();
+                    if ($folgefrageId) {
+                        echo "if (antwortId == " . $antwort['id'] . " && aktuelleFrageId == 'frage_" . $frage['id'] . "') { naechsteFrageId = " . $folgefrageId . "; console.log('Bedingung erfüllt für Antwort ' + antwortId + ' und Frage ' + aktuelleFrageId + ', nächste Frage ID: ' + naechsteFrageId);}";
+                    }
+                }
+                ?>
+            <?php endforeach; ?>
         <?php endforeach; ?>
-    <?php endforeach; ?>
+
+        console.log("Naechste Frage ID:", naechsteFrageId); // Debugging
 
         // Aktuelle Frage verstecken
         $('#' + aktuelleFrageId).hide();
