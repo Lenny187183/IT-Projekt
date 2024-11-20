@@ -117,7 +117,8 @@ foreach ($antwortkombinationen as $kombination) {
             <?php endforeach; ?>
 
             <button type="submit">Weiterleiten</button> 
-        </form> 
+            <button type="button" onclick="zeigeVorherigeFrage(this)">Zurück</button>
+            </form> 
     </div>
 
     <script>
@@ -160,6 +161,51 @@ foreach ($antwortkombinationen as $kombination) {
             alert('Ende des Fragebogens erreicht!');
         }
     }
+
+
+    function zeigeVorherigeFrage(radio) {
+    // ID der aktuellen Frage ermitteln
+    var aktuelleFrageId = $(radio).closest('.frage').attr('id');
+    console.log("Aktuelle Frage ID:", aktuelleFrageId); // Debugging
+
+    // ID der vorherigen Frage (Parent-Frage) ermitteln
+    var vorherigeFrageId = null;
+    var antwortId = $(radio).val(); // Die ID der aktuellen Antwort
+
+    <?php foreach ($fragen as $frage): ?>
+        <?php 
+        // Antworten zur Frage laden (innerhalb der Schleife)
+        $antwort = new Antwort();
+        $antworten = $antwort->ladenAntwortenFuerFrage($conn, $frage['id']);
+        ?>
+        <?php foreach ($antworten as $antwort): ?>
+            <?php
+            $verzweigung = new Verzweigung();
+            if ($verzweigung->ladenAusDatenbankMitAntwortId($conn, $antwort['id'])) {
+                $folgefrageId = $verzweigung->getFolgefrageId(); // ID der Folgefrage
+                if ($folgefrageId) {
+                    // JavaScript-Code generieren, um die vorherige Frage zu ermitteln
+                    echo "if (antwortId == " . $antwort['id'] . " && aktuelleFrageId == 'frage_" . $folgefrageId . "') { vorherigeFrageId = " . $frage['id'] . "; console.log('Bedingung erfüllt für Antwort ' + antwortId + ' und Frage ' + aktuelleFrageId + ', vorherige Frage ID: ' + vorherigeFrageId);}";
+                }
+            }
+            ?>
+        <?php endforeach; ?>
+    <?php endforeach; ?>
+
+    console.log("Vorherige Frage ID:", vorherigeFrageId); // Debugging
+
+    // Aktuelle Frage verstecken
+    $('#' + aktuelleFrageId).hide();
+
+    // Vorherige Frage anzeigen (falls vorhanden)
+    if (vorherigeFrageId) {
+        $('#frage_' + vorherigeFrageId).show();
+    } else {
+        alert('Dies ist die erste Frage!'); // Oder andere Aktion
+    }
+}
+
+
     </script>
 </body>
 </html>
