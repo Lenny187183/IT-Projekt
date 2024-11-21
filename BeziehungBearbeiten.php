@@ -69,16 +69,41 @@ if ($fragebogenId) {
 
         // Verzweigungen löschen, wenn der Löschen-Button geklickt wurde
         if (isset($_POST['loeschen_beziehungen'])) {
-            $sql = "DELETE FROM verzweigung WHERE antwort_id IN (SELECT id FROM antwort WHERE frage_id IN (SELECT id FROM frage WHERE fragebogen_id = ?))";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param("i", $fragebogenId);
+            $sql = "DELETE ak 
+            FROM antwortkombination ak
+            JOIN antwortkombination_antwort aka ON ak.id = aka.antwortkombination_id
+            WHERE aka.antwort_id IN (
+                SELECT a.id 
+                FROM antwort a
+                JOIN frage f ON a.frage_id = f.id
+                WHERE f.fragebogen_id = ?
+            )";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $fragebogenId);
+    $stmt->execute();
 
-            if ($stmt->execute()) {
-                echo "Alle Beziehungen für diesen Fragebogen wurden gelöscht.";
-            } else {
-                echo "Fehler beim Löschen der Beziehungen.";
-            }
-        }
+    // 2. Setze alle ziel_url-Werte in der Tabelle antwort auf NULL
+    $sql = "UPDATE antwort SET ziel_url = NULL 
+            WHERE frage_id IN (
+                SELECT id 
+                FROM frage 
+                WHERE fragebogen_id = ?
+            )";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $fragebogenId);
+    $stmt->execute();
+
+    // 3. Lösche alle Verzweigungen für den Fragebogen
+    $sql = "DELETE FROM verzweigung WHERE antwort_id IN (SELECT id FROM antwort WHERE frage_id IN (SELECT id FROM frage WHERE fragebogen_id = ?))";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $fragebogenId);
+
+    if ($stmt->execute()) {
+        echo "Alle Beziehungen und Ziel-URLs für diesen Fragebogen wurden gelöscht.";
+    } else {
+        echo "Fehler beim Löschen der Beziehungen.";
+    }
+}
 
         ?>
 

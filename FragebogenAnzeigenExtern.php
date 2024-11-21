@@ -2,7 +2,7 @@
 require_once 'Klassen/fragebogen.php';
 require_once 'Klassen/frage.php';
 require_once 'Klassen/antwort.php';
-require_once 'Klassen/verzweigung.php'; // Verzweigung Klasse einbinden
+require_once 'Klassen/verzweigung.php'; 
 require_once 'Klassen/antwortkombination.php';
 require_once 'Klassen/antwortkombination_antwort.php'; 
 require_once 'config.php';
@@ -83,9 +83,11 @@ foreach ($antwortkombinationen as $kombination) {
     <link rel="stylesheet" href="schön.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
     <style>
-        .frage {
+
+.frage {
             display: none; /* Alle Fragen initial verstecken */
         }
+        
         #frage_<?php echo $fragen[0]['id']; ?> { /* Die erste Frage anzeigen */ 
             display: block;
         }
@@ -108,104 +110,92 @@ foreach ($antwortkombinationen as $kombination) {
                     <div class="antworten">
                         <?php foreach ($antworten as $antwort): ?>
                             <label>
-                                <input type="radio" name="antworten[<?php echo $frage['id']; ?>]" value="<?php echo $antwort['id']; ?>" onchange="zeigeNaechsteFrage(this)"> 
-                                <?php echo $antwort['antworttext']; ?>
+                                <input type="radio" name="antworten[<?php echo $frage['id']; ?>]" value="<?php echo $antwort->getId(); ?>" onchange="zeigeNaechsteFrage(this)"> 
+                                <?php echo $antwort->getAntworttext(); ?>
+
+                                <?php if ($antwort->getZielUrl()): ?>
+                                    <span class="ziel-url">(Ziel-URL: <?php echo $antwort->getZielUrl(); ?>)</span> 
+                                <?php endif; ?>
                             </label><br> 
                         <?php endforeach; ?>
                     </div>
+
+                    <?php 
+                    // Ermittle die ID der vorherigen Frage (Parent-Frage)
+                    $verzweigung = new Verzweigung();
+                    // Wichtig: Hier die letzte Antwort der aktuellen Frage verwenden
+                    //$lastAntwort = end($antworten); 
+                    //$verzweigung->ladenAusDatenbankMitAntwortId($conn, $lastAntwort->getId()); 
+                    $parentFrageId = $verzweigung->getParentFrageId();
+                    ?>
+
+                    <?php if ($parentFrageId): ?>
+                        <button type="button" class="zurueck-button" data-parent-frage-id="<?php echo $parentFrageId; ?>">Zurück</button> 
+                    <?php endif; ?>
                 </div>
             <?php endforeach; ?>
 
             <button type="submit">Weiterleiten</button> 
-            <button type="button" onclick="zeigeVorherigeFrage(this)">Zurück</button>
-            </form> 
+        </form> 
     </div>
 
     <script>
-    function zeigeNaechsteFrage(radio) {
-        // ID der aktuellen Frage ermitteln
-        var aktuelleFrageId = $(radio).closest('.frage').attr('id');
-        console.log("Aktuelle Frage ID:", aktuelleFrageId); // Debugging
+        function zeigeNaechsteFrage(radio) {
+            // ID der aktuellen Frage ermitteln
+            var aktuelleFrageId = $(radio).closest('.frage').attr('id');
 
-        // ID der nächsten Frage ermitteln
-        var naechsteFrageId = null;
-        var antwortId = $(radio).val();
-        <?php foreach ($fragen as $frage): ?>
-            <?php 
-            // Antworten zur Frage laden (innerhalb der Schleife)
-            $antwort = new Antwort();
-            $antworten = $antwort->ladenAntwortenFuerFrage($conn, $frage['id']);
-            ?>
-            <?php foreach ($antworten as $antwort): ?>
-                <?php
-                $verzweigung = new Verzweigung();
-                if ($verzweigung->ladenAusDatenbankMitAntwortId($conn, $antwort['id'])) {
-                    $folgefrageId = $verzweigung->getFolgefrageId();
-                    if ($folgefrageId) {
-                        echo "if (antwortId == " . $antwort['id'] . " && aktuelleFrageId == 'frage_" . $frage['id'] . "') { naechsteFrageId = " . $folgefrageId . "; console.log('Bedingung erfüllt für Antwort ' + antwortId + ' und Frage ' + aktuelleFrageId + ', nächste Frage ID: ' + naechsteFrageId);}";
-                    }
-                }
+            // ID der nächsten Frage und Ziel-URL ermitteln
+            var naechsteFrageId = null;
+            var zielUrl = null;
+            var antwortId = $(radio).val();
+
+            <?php foreach ($fragen as $frage): ?>
+                <?php 
+                // Antworten zur Frage laden (innerhalb der Schleife)
+                $antwort = new Antwort();
+                $antworten = $antwort->ladenAntwortenFuerFrage($conn, $frage['id']);
                 ?>
+                <?php foreach ($antworten as $antwort): ?>
+                    <?php
+                    $verzweigung = new Verzweigung();
+                    if ($verzweigung->ladenAusDatenbankMitAntwortId($conn, $antwort->getId())) {
+                        $folgefrageId = $verzweigung->getFolgefrageId();
+                        if ($folgefrageId) {
+                            echo "if (antwortId == " . $antwort->getId() . " && aktuelleFrageId == 'frage_" . $frage['id'] . "') { naechsteFrageId = " . $folgefrageId . "; }";
+                        }
+                    }
+
+                    // Weiterleitungs-URL hinzufügen
+                    $zielUrl = $antwort->getZielUrl();
+                    if (!empty($zielUrl)) {
+                        echo "if (antwortId == " . $antwort->getId() . ") { zielUrl = '" . $zielUrl . "'; }";
+                    }
+                    ?>
+                <?php endforeach; ?>
             <?php endforeach; ?>
-        <?php endforeach; ?>
 
-        console.log("Naechste Frage ID:", naechsteFrageId); // Debugging
+            // Aktuelle Frage verstecken
+            $('#' + aktuelleFrageId).hide();
 
-        // Aktuelle Frage verstecken
-        $('#' + aktuelleFrageId).hide();
-
-        // Nächste Frage anzeigen (falls vorhanden)
-        if (naechsteFrageId) {
-            $('#frage_' + naechsteFrageId).show();
-        } else {
-            alert('Ende des Fragebogens erreicht!');
-        }
-    }
-
-
-    function zeigeVorherigeFrage(radio) {
-    // ID der aktuellen Frage ermitteln
-    var aktuelleFrageId = $(radio).closest('.frage').attr('id');
-    console.log("Aktuelle Frage ID:", aktuelleFrageId); // Debugging
-
-    // ID der vorherigen Frage (Parent-Frage) ermitteln
-    var vorherigeFrageId = null;
-    var antwortId = $(radio).val(); // Die ID der aktuellen Antwort
-
-    <?php foreach ($fragen as $frage): ?>
-        <?php 
-        // Antworten zur Frage laden (innerhalb der Schleife)
-        $antwort = new Antwort();
-        $antworten = $antwort->ladenAntwortenFuerFrage($conn, $frage['id']);
-        ?>
-        <?php foreach ($antworten as $antwort): ?>
-            <?php
-            $verzweigung = new Verzweigung();
-            if ($verzweigung->ladenAusDatenbankMitAntwortId($conn, $antwort['id'])) {
-                $folgefrageId = $verzweigung->getFolgefrageId(); // ID der Folgefrage
-                if ($folgefrageId) {
-                    // JavaScript-Code generieren, um die vorherige Frage zu ermitteln
-                    echo "if (antwortId == " . $antwort['id'] . " && aktuelleFrageId == 'frage_" . $folgefrageId . "') { vorherigeFrageId = " . $frage['id'] . "; console.log('Bedingung erfüllt für Antwort ' + antwortId + ' und Frage ' + aktuelleFrageId + ', vorherige Frage ID: ' + vorherigeFrageId);}";
-                }
+            // Weiterleitung, falls eine Ziel-URL definiert ist
+            if (zielUrl) {
+                window.location.href = zielUrl;
+            } else if (naechsteFrageId) {
+                $('#frage_' + naechsteFrageId).show();
+            } else {
+                alert('Ende des Fragebogens erreicht!');
             }
-            ?>
-        <?php endforeach; ?>
-    <?php endforeach; ?>
+        }
 
-    console.log("Vorherige Frage ID:", vorherigeFrageId); // Debugging
+        $(document).ready(function() {
+            $(".zurueck-button").click(function() {
+                var aktuelleFrageId = $(this).closest('.frage').attr('id');
+                var parentFrageId = $(this).data('parent-frage-id');
 
-    // Aktuelle Frage verstecken
-    $('#' + aktuelleFrageId).hide();
-
-    // Vorherige Frage anzeigen (falls vorhanden)
-    if (vorherigeFrageId) {
-        $('#frage_' + vorherigeFrageId).show();
-    } else {
-        alert('Dies ist die erste Frage!'); // Oder andere Aktion
-    }
-}
-
-
+                $('#' + aktuelleFrageId).hide();
+                $('#frage_' + parentFrageId).show();
+            });
+        });
     </script>
 </body>
 </html>
