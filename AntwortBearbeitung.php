@@ -4,7 +4,6 @@ require_once 'Klassen/frage.php';
 require_once 'Klassen/antwort.php';
 require_once 'config.php';
 
-
 // Datenbankverbindung 
 $conn = new mysqli($db_host, $db_user, $db_pass, $db_name); 
 
@@ -30,8 +29,8 @@ if ($fragebogenId && $frageId) {
     $fragetext = $frageObjekt->getFragetext();
 
     // Antworten zur Frage laden
-    $antwort = new Antwort(null, $frageId, null); // Neue Antwort, daher id = null, frage_id wird übergeben, antworttext ist noch leer
-$antworten = $antwort->ladenAntwortenFuerFrage($conn, $frageId);
+    $antwort = new Antwort();
+    $antworten = $antwort->ladenAntwortenFuerFrage($conn, $frageId);
 
     // Formularverarbeitung zum Hinzufügen einer neuen Antwort
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['neue_antwort'])) {
@@ -44,6 +43,22 @@ $antworten = $antwort->ladenAntwortenFuerFrage($conn, $frageId);
         // Seite neu laden, um die neue Antwort im Dropdown anzuzeigen
         header("Location: AntwortBearbeiten.php?fragebogen_id=$fragebogenId&frage_id=$frageId");
         exit();
+    }
+
+    // Antwort löschen, wenn der Löschen-Button geklickt wurde
+    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['loeschen_antwort'])) {
+        $antwortId = $_POST['antwortenDropdown'];
+
+        // Antwort löschen
+        $sql = "DELETE FROM antwort WHERE id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $antwortId);
+
+        if ($stmt->execute()) {
+            echo "Antwort erfolgreich gelöscht.";
+        } else {
+            echo "Fehler beim Löschen der Antwort.";
+        }
     }
 } else {
     $fragebogenTitel = "Kein Fragebogen ausgewählt";
@@ -80,12 +95,14 @@ $antworten = $antwort->ladenAntwortenFuerFrage($conn, $frageId);
 
         <h2>Vorhandene Antworten</h2>
         <?php if (!empty($antworten)): ?>
-            <select id="antwortenDropdown">
-                <?php foreach ($antworten as $antwort): ?>
-                    <option value="<?= $antwort['id'] ?>"><?= $antwort['antworttext'] ?></option>
-                <?php endforeach; ?>
-            </select>
-            </form> </div>
+            <form action="" method="post"> 
+                <select id="antwortenDropdown" name="antwortenDropdown" style="white-space: pre-wrap;"> 
+                    <?php foreach ($antworten as $antwort): ?>
+                        <option value="<?= $antwort->getId() ?>"><?= $antwort->getAntworttext() ?></option> 
+                    <?php endforeach; ?>
+                </select>
+                <button type="submit" name="loeschen_antwort" onclick="return confirm('Sind Sie sicher, dass Sie diese Antwort löschen möchten?')">Antwort löschen</button>
+            </form> 
         <?php else: ?>
             <p>Keine Antworten gefunden.</p>
         <?php endif; ?>
@@ -94,4 +111,3 @@ $antworten = $antwort->ladenAntwortenFuerFrage($conn, $frageId);
     <a href="AdminSicht.php?fragebogen_id=<?php echo $fragebogenId; ?>">Zurück zur Fragenübersicht</a>
 </body>
 </html>
-
