@@ -74,7 +74,6 @@ $fragebogen = $result->fetch_all(MYSQLI_ASSOC);
         <?php echo $dropdownFragebogen->getFragebogenDropdownOptions($conn); ?> 
     </select>
     <button type="submit" name="bearbeiten">Bearbeiten</button> 
-    <button type="button" onclick="weiterleitungBearbeiten()">Weiterleitung bearbeiten</button>
     <button type="button" onclick="beziehungenBearbeiten()">Beziehungen bearbeiten</button>
     <button type="button" onclick="anzeigenFragebogen()">Anzeigen</button>
 
