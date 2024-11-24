@@ -99,7 +99,7 @@ $fragebogen = $result->fetch_all(MYSQLI_ASSOC);
         function anzeigenFragebogen() {
     const selectedFragebogenId = document.querySelector('select[name="fragebogen_id"]').value;
     if (selectedFragebogenId) {
-        window.location.href = `FragebogenAnzeigen.php?fragebogen_id=${selectedFragebogenId}`; // Korrigierter Link
+        window.location.href = `FragebogenAnzeigenExtern.php?fragebogen_id=${selectedFragebogenId}`; // Korrigierter Link
     } else {
         alert("Bitte wählen Sie einen Fragebogen aus.");
     }
